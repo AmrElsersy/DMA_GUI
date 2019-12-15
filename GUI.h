@@ -12,6 +12,8 @@
 #include <QFileDialog>
 #include <QIcon>
 #include <QString>
+#include <QVector>
+#include <QStringList>
 
 class Gui : public QWidget
 {
@@ -47,7 +49,8 @@ private:
 
     QFileDialog *dialogFile;
 
-
+    // Vector of strings which holds program assembly code
+    QVector<QString> *assemblyCode;
 
 
 
@@ -70,7 +73,8 @@ public slots:
     void memory_IO_Slot();
     void io_Memory_Slot();
     void memory_Memory_Slot();
-//    void simulate_Slot();
+    void simulate_Slot();
+
 //    void open_Slot();
 //    void save_Slot();
 

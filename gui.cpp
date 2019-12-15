@@ -4,9 +4,6 @@
 
 Gui::Gui(QWidget *parent) : QWidget(parent){
 
-
-
-
     //Allocating objects
     memoryIO = new QPushButton("Memory - IO");
     IOMemory = new QPushButton("IO - Memory");
@@ -26,6 +23,8 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
 
     errorMessage = new QMessageBox();
 
+    assemblyCode = new QVector<QString>();
+
     // Calling proper functions
     drawButtons();
     drawLineEdit();
@@ -38,6 +37,7 @@ void Gui::drawButtons()
 {
 
     // Adjusting button sizes
+
     memoryIO->setMinimumSize(100,100);
     IOMemory->setMinimumSize(100,100);
     MemtoMem->setMinimumSize(100,100);
@@ -49,12 +49,15 @@ void Gui::drawButtons()
     IOMemory->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
     MemtoMem->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
 
-    systemGrid->addWidget(memoryIO,0,4,2,4);
-    systemGrid->addWidget(IOMemory,1,4,2,4);
-    systemGrid->addWidget(MemtoMem,2,4,2,4);
     systemGrid->addWidget(open,0,1,1,1);
     systemGrid->addWidget(save,0,2,1,1);
-    systemGrid->addWidget(simulate,7,7,1,1);
+
+    systemGrid->addWidget(memoryIO,2,4,1,3);
+    systemGrid->addWidget(IOMemory,3,4,1,3);
+    systemGrid->addWidget(MemtoMem,4,4,1,3);
+    systemGrid->addWidget(simulate,6,4,1,3);
+
+    //systemGrid->setContentsMargins(7,7,7,7);
 
 
 }
@@ -70,9 +73,9 @@ void Gui::drawLineEdit()
     destination->setMinimumSize(80,100);
     count->setMinimumSize(80,100);
 
-    systemGrid->addWidget(source,4,4,1,1);
-    systemGrid->addWidget(destination,5,4,1,1);
-    systemGrid->addWidget(count,6,4,1,1);
+    systemGrid->addWidget(source,6,1,1,1);
+    systemGrid->addWidget(destination,6,2,1,1);
+    systemGrid->addWidget(count,6,3,1,1);
 
 
 }
@@ -80,14 +83,9 @@ void Gui::drawLineEdit()
 void Gui::drawPlainText()
 {
 
-
-
     plainText->setPlaceholderText("Insert Assembly Instructions");
-
-
-    systemGrid->addWidget(plainText,1,0,3,2);
-
-
+    plainText->setBackgroundVisible(true);
+    systemGrid->addWidget(plainText,1,1,5,3);
 }
 
 void Gui::connections()
@@ -103,6 +101,11 @@ void Gui::connections()
 
     // Connecting memory to memory slot to a button click signal
     connect(MemtoMem,SIGNAL(clicked()),this,SLOT(memory_Memory_Slot()));
+
+    /* Connecting simulate slot to a button click & returning vector
+     * of strings which represents my assembly code
+     */
+    connect(simulate,SIGNAL(clicked()),this,SLOT(simulate_Slot()));
 
 
 
@@ -164,3 +167,35 @@ void Gui::memory_Memory_Slot()
         plainText->appendPlainText("init mem mem");
     }
 }
+
+void Gui::simulate_Slot()
+{
+    /*
+     *
+     *
+     */
+    QStringList *list = new QStringList();
+
+    QString *temp = new QString(plainText->toPlainText());
+    list->append(temp->split("\n"));
+
+    for (int i =0;i<list->size();i++)
+    {
+        assemblyCode->push_back(list->at(i));
+
+    }
+    delete list;
+    delete temp;
+}
+
+
+
+
+
+
+
+
+
+
+
+
