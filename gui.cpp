@@ -173,8 +173,8 @@ void Gui::memory_Memory_Slot()
     }
     else
     {
-        plainText->appendPlainText("INIT_MEM_MEM ," + (source->selectedText()) + QString(" ,") + (destination->selectedText())
-                                   + QString(" ,")  + (count->selectedText()));
+        plainText->appendPlainText("INIT_MEM_MEM " + (source->text()) + QString(" ,") + (destination->text())
+                                   + QString(" ,")  + (count->text()));
     }
 }
 
