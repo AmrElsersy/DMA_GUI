@@ -2,33 +2,31 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Assembler/simulator.h"
 
 #include <QPushButton>
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPlainTextEdit>
+#include <QMessageBox>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
 
+#include "GUI.h"
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    Simulator* simulator;
-
-    QPushButton* button;
-    QLineEdit* lineEdit;
-
+    Gui* gui;
 public:
     MainWindow(QWidget *parent = nullptr);
 
 signals:
-    void triger_event();
+
 public slots:
-    void slot_for_button();
 };
 #endif // MAINWINDOW_H

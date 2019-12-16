@@ -5,6 +5,7 @@
 Gui::Gui(QWidget *parent) : QWidget(parent){
 
     //Allocating objects
+    simulator =new Simulator();
     memoryIO = new QPushButton("Memory - IO");
     IOMemory = new QPushButton("IO - Memory");
     MemtoMem = new QPushButton("Memory - Memory");
@@ -23,13 +24,13 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
 
     errorMessage = new QMessageBox();
 
-    assemblyCode = new QVector<QString>();
-
     // Calling proper functions
     drawButtons();
     drawLineEdit();
     drawPlainText();
     connections();
+
+    this->setLayout(this->systemGrid);
 
 }
 
@@ -170,10 +171,6 @@ void Gui::memory_Memory_Slot()
 
 void Gui::simulate_Slot()
 {
-    /*
-     *
-     *
-     */
     QStringList *list = new QStringList();
 
     QString *temp = new QString(plainText->toPlainText());
@@ -181,9 +178,9 @@ void Gui::simulate_Slot()
 
     for (int i =0;i<list->size();i++)
     {
-        assemblyCode->push_back(list->at(i));
-
+        assemblyCode.push_back(list->at(i).toStdString());
     }
+    this->simulator->ASSEMBLY(assemblyCode);
     delete list;
     delete temp;
 }

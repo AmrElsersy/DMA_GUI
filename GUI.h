@@ -15,6 +15,10 @@
 #include <QVector>
 #include <QStringList>
 
+#include "Assembler/simulator.h"
+#include <bits/stdc++.h>
+using namespace std;
+
 class Gui : public QWidget
 {
     Q_OBJECT
@@ -24,6 +28,7 @@ private:
     const short MAX_TRANSFER_LOCATION = 1023;
     const short MAX_TRANSFER_BYTES = 512;
 
+    Simulator* simulator;
     //GUI push buttons
     QPushButton *memoryIO;
 
@@ -50,9 +55,7 @@ private:
     QFileDialog *dialogFile;
 
     // Vector of strings which holds program assembly code
-    QVector<QString> *assemblyCode;
-
-
+    vector<string> assemblyCode;
 
 
 public:
@@ -77,8 +80,6 @@ public slots:
 
 //    void open_Slot();
 //    void save_Slot();
-
-
 
 };
 
