@@ -5,6 +5,7 @@
 Gui::Gui(QWidget *parent) : QWidget(parent){
 
     //Allocating objects
+    dialogFile = new QFileDialog();
     simulator =new Simulator();
     memoryIO = new QPushButton("Memory - IO");
     IOMemory = new QPushButton("IO - Memory");
@@ -108,6 +109,12 @@ void Gui::connections()
      */
     connect(simulate,SIGNAL(clicked()),this,SLOT(simulate_Slot()));
 
+    /*
+     *
+     */
+    connect(open,SIGNAL(clicked()),this,SLOT(open_Slot()));
+    connect(dialogFile,SIGNAL(fileSelected(QString)),this,SLOT(file_Is_Selected(const QString)));
+
 
 
 }
@@ -151,14 +158,15 @@ void Gui::memory_Memory_Slot()
     /* Checking if source, destination & count within available transfer range or not
      * Assuming our range from location 64 to 1023 & count ranges from 1 to 512
      */
-    else if (source->text().toInt()<64 ||
-             destination->text().toInt()>1023)
+    else if (source->text().toInt()<MIN_TRANSFER_LOCATION ||
+             destination->text().toInt()>MAX_TRANSFER_LOCATION)
     {
         //errorMessage->setInformativeText(source->text());
-        errorMessage->setInformativeText("Please Specify Within Range (64-1023) ");
+        errorMessage->setInformativeText("Please Specify Within Allowed Range \nSource :384 \n "
+                                         "Destination: 65,536‬ ");
         errorMessage->show();
     }
-    else if (count->text().toInt() <= 0)
+    else if (count->text().toInt() <= 0 || count->text().toInt() >= MAX_TRANSFER_BYTES)
     {
         errorMessage->setInformativeText("Please Specify A Correct Count Value ");
         errorMessage->show();
@@ -185,6 +193,38 @@ void Gui::simulate_Slot()
     delete temp;
 }
 
+void Gui::open_Slot()
+{
+    dialogFile->setNameFilter("*.txt");
+    dialogFile->setAcceptMode(QFileDialog::AcceptOpen);
+    dialogFile->setViewMode(QFileDialog::List);
+    dialogFile->setFileMode(QFileDialog::ExistingFile);
+    dialogFile->show();
+}
+
+void Gui::file_Is_Selected(const QString processFile)
+{
+    QStringList list;
+    QFile assemblyFile(processFile);
+    assemblyFile.open(QIODevice::ReadOnly);
+
+    while(!(assemblyFile.atEnd()))
+    {
+        list.push_back(assemblyFile.readLine());
+    }
+    short i =0;
+    while(i < list.size())
+    {
+       plainText->insertPlainText(list.at(i));
+       i++;
+    }
+
+
+
+
+//    errorMessage->setInformativeText(list.at(1));
+//    errorMessage->show();
+}
 
 
 

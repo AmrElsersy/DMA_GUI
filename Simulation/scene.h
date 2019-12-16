@@ -55,11 +55,10 @@ private:
 public:
     explicit myScene(QWidget *parent = nullptr);
     void updateProgressBar();
-    void updateColorsClocks(int);
+    void updateStates(int);
 
 private:
     void initColors();
-    void initText();
     void initStates();
     void initButtons();
     void ReadClocks();

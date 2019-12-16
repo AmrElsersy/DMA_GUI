@@ -14,6 +14,8 @@
 #include <QString>
 #include <QVector>
 #include <QStringList>
+#include <QFile>
+#include <math.h>
 
 #include "Assembler/simulator.h"
 #include <bits/stdc++.h>
@@ -24,9 +26,9 @@ class Gui : public QWidget
     Q_OBJECT
 
 private:
-    const short MIN_TRANSFER_LOCATION = 64;
-    const short MAX_TRANSFER_LOCATION = 1023;
-    const short MAX_TRANSFER_BYTES = 512;
+    const double MIN_TRANSFER_LOCATION = 32*6; // 4-IO devices each 32 location + 2*32 location for DMA
+    const double MAX_TRANSFER_LOCATION = pow(2,16); // 64K Memory
+    const double MAX_TRANSFER_BYTES = pow(2,14); // Max bytes to transfer
 
     Simulator* simulator;
     //GUI push buttons
@@ -65,7 +67,6 @@ public:
     void drawLineEdit();
     void drawPlainText();
 
-
     void connections();
     QGridLayout* getMainGrid();
 
@@ -77,10 +78,9 @@ public slots:
     void io_Memory_Slot();
     void memory_Memory_Slot();
     void simulate_Slot();
-
-//    void open_Slot();
+    void open_Slot();
 //    void save_Slot();
-
+    void file_Is_Selected(const QString);
 };
 
 #endif // GUI_H

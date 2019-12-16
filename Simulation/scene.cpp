@@ -11,7 +11,6 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
     this->addItem(this->cursor);
     // MIPS Pipeline Image
 
-    this->initText();
     this->initColors();
 
     this->index = 0;
@@ -21,7 +20,7 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
 
 }
 
-void myScene::updateColorsClocks(int direction)
+void myScene::updateStates(int direction)
 {
 
     if(direction == 1) // right
@@ -133,13 +132,13 @@ void myScene::rightButton()
 {
     if(this->timer->isActive())
         this->timer->stop();
-    this->updateColorsClocks(1);
+    this->updateStates(1);
 }
 void myScene::leftButton()
 {
     if(this->timer->isActive())
         this->timer->stop();
-    this->updateColorsClocks(-1);
+    this->updateStates(-1);
 }
 void myScene::playButton()
 {
@@ -155,7 +154,7 @@ void myScene::continuous_play()
         this->timer->stop();
         return;
     }
-    this->updateColorsClocks(1);
+    this->updateStates(1);
 }
 void myScene::ReadClocks()
 {
