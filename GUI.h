@@ -26,11 +26,13 @@ class Gui : public QWidget
     Q_OBJECT
 
 private:
-    const double MIN_TRANSFER_LOCATION = 32*6; // 4-IO devices each 32 location + 2*32 location for DMA
-    const double MAX_TRANSFER_LOCATION = pow(2,16); // 64K Memory
-    const double MAX_TRANSFER_BYTES = pow(2,14); // Max bytes to transfer
+    const long MIN_TRANSFER_LOCATION = 32*6; // 4-IO devices each 32 location + 2*32 location for DMA
+    const long MAX_TRANSFER_LOCATION = pow(2,16); // 64K Memory
+    const long MAX_TRANSFER_BYTES = pow(2,14); // Max bytes to transfer
+    const long MAX_REGISTER_VALUE = pow(2,16);
 
     Simulator* simulator;
+
     //GUI push buttons
     QPushButton *memoryIO;
 
@@ -39,6 +41,8 @@ private:
     QPushButton *simulate;
     QPushButton *open;
     QPushButton *save;
+    QPushButton *programDMA;
+
 
     //GUI text editor
     QPlainTextEdit *plainText;
@@ -47,6 +51,14 @@ private:
     QLineEdit *source;
     QLineEdit *destination;
     QLineEdit *count;
+
+    //GUI text lines for DMA registers
+    QLineEdit *BWRegister;
+    QLineEdit *BWCRegister;
+    QLineEdit *commandRegister;
+    QLineEdit *modeRegister;
+    QLineEdit *maskRegister;
+    QLineEdit *requestRegister;
 
     //GUI grid layout
     QGridLayout *systemGrid;
@@ -79,8 +91,9 @@ public slots:
     void memory_Memory_Slot();
     void simulate_Slot();
     void open_Slot();
-   // void save_Slot();
+    void program_DMA_Slot();
     void file_Is_Selected(const QString);
+    // void save_Slot();
 };
 
 #endif // GUI_H
