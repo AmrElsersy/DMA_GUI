@@ -10,6 +10,8 @@ using namespace std;
 #define main_operand 0
 #define I_Format_Fun 100
 #define J_Format_Fun 200
+#define DMA_FORMAT 300
+
 class Simulator;
 class Assembler : public QObject
 {

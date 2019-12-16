@@ -40,7 +40,6 @@ void Simulator::clear()
     this->register_file->clear();
     this->address = 0;   // pc = 0
     this->lines.clear();
-
 }
 
 void Simulator::update_GUI()
@@ -51,9 +50,9 @@ void Simulator::update_GUI()
 
 void Simulator::Modelsim()
 {
-        emit file_assembled_instructions(this->file_assembly_path); // write file with assembledd instructions
-        this->modelsim_process->start(this->modelsim_command);// run modelsim to read the assembly file and write in the dataMemory and regFile files
-        this->modelsim_process->waitForFinished(-1);
+    emit file_assembled_instructions(this->file_assembly_path); // write file with assembledd instructions
+    this->modelsim_process->start(this->modelsim_command);// run modelsim to read the assembly file and write in the dataMemory and regFile files
+    this->modelsim_process->waitForFinished(-1);
     this->modelsim_process->close();
 }
 
@@ -100,7 +99,7 @@ void Simulator::Simulate()
         return;
     }
     emit Output_Print("ModelSim Finished.");
-//    emit file_assembled_instructions(this->file_assembly_path); // write file with assembledd instructions
+    //    emit file_assembled_instructions(this->file_assembly_path); // write file with assembledd instructions
     emit Output_Print("..................");
 }
 void Simulator::debugg_pc()
@@ -146,7 +145,7 @@ void Simulator::updateState(int direction)
         }
         this->index --;
     }
-//    cout << this->lines[PCs[this->index-2]] << endl;
+    //    cout << this->lines[PCs[this->index-2]] << endl;
     for(int l=0; l < lines.size();l++)
         cout << lines[l] << " ";
     cout << endl;
@@ -178,11 +177,12 @@ void Simulator::Simulate(string path)
 
 void Simulator::Read_Instruction_Editor()
 {
-//    this->code_from_editor = emit getInstruction_Editor();
+    //    this->code_from_editor = emit getInstruction_Editor();
 
     string s;
     uint address = 0;
-    uint start = this->Read_Data_Editor(code_from_editor);
+//    uint start = this->Read_Data_Editor(code_from_editor);
+    uint start = 0;
 
     for (uint i =start ;i< code_from_editor.size();i++)
     {

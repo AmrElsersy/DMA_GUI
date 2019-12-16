@@ -3,6 +3,9 @@ Assembler::Assembler(Register_File* register_file_access)
 {
     this->regFile = register_file_access;
     // ============ R-Format =============
+    // add $s0,$s0,$s1
+    // 0 , 16 ,16 ,16 , 0 , 32
+    // 1 , 0
     this->operands["add"] = {0,32};
     this->operands["sub"] = {0,34};
     this->operands["and"] = {0,36};
@@ -19,7 +22,6 @@ Assembler::Assembler(Register_File* register_file_access)
     this->operands["andi"] = {12,I_Format_Fun};
     this->operands["ori" ] = {13,I_Format_Fun};
     this->operands["xori"] = {14,I_Format_Fun};
-    this->operands["slti"] = {10,I_Format_Fun};
     this->operands["sgti"] = {11,I_Format_Fun};
     this->operands["lui" ] = {15,I_Format_Fun};
     this->operands[ "lw" ] = {35,I_Format_Fun};
@@ -27,14 +29,18 @@ Assembler::Assembler(Register_File* register_file_access)
     this->operands["beq" ] = {4, I_Format_Fun};
     this->operands["bne"]  = {5, I_Format_Fun};
     this->operands["li"]   = {101,I_Format_Fun};
-    this->operands["LW"]  = {60,I_Format_Fun};
-    this->operands["SW"]  = {61,I_Format_Fun};
+    this->operands["LW"]  = {9,I_Format_Fun};
+    this->operands["SW"]  = {10,I_Format_Fun};
     // ============ J-Format =============
     this->operands[ "j" ]     = {2, J_Format_Fun};
     this->operands["jal"]     = {3, J_Format_Fun};
     this->operands["push"]    = {200,J_Format_Fun};
     this->operands["pop"]     =  {201,J_Format_Fun};
-    // ===================================
+    // =============DMA-Format===============
+    this->operands["INIT_IO_MEM"] = {1,DMA_FORMAT};
+    this->operands["INIT_MEM_IO"] = {2,DMA_FORMAT};
+    this->operands["INIT_MEM_MEM"] = {3,DMA_FORMAT};
+
 
 }
 bool Assembler::verify_operand(string operand_ray2)
@@ -78,8 +84,25 @@ bool Assembler::Assemble(vector<string> Instruction)
 
     assembled_Instruction.push_front(this->get_opcode(this->operand));
     uint Fun = this->get_fun(this->operand);
-
-    if (Fun == I_Format_Fun )
+    if (Fun == DMA_FORMAT)
+    {
+        if(this->operand == "INIT_IO_MEM")
+        {
+            assembled_Instruction.push_back(0);
+        }
+        else if (this->operand == "INIT_MEM_IO")
+        {
+            assembled_Instruction.push_back(0);
+        }
+        // INIT_MEM_MEM ,source,distination,count
+        else if (this->operand == "INIT_MEM_MEM")
+        {
+            assembled_Instruction.push_back(stoi(Instruction[1]));
+            assembled_Instruction.push_back(stoi(Instruction[2]));
+            assembled_Instruction.push_back(stoi(Instruction[3]));
+        }
+    }
+    else if (Fun == I_Format_Fun )
     {
         if (this->operand == "sw" || this->operand == "lw")
         {
@@ -165,7 +188,7 @@ bool Assembler::Assemble(vector<string> Instruction)
         }
     }
 
-    if (Fun != I_Format_Fun && Fun != J_Format_Fun)
+    if (Fun != I_Format_Fun && Fun != J_Format_Fun && Fun != DMA_FORMAT)
         assembled_Instruction.push_back(Fun);
 
 
@@ -188,8 +211,22 @@ string assemble(int num , uint n)
 void Assembler::convert_Assemble_to_String(deque<int> instruction,uint Fun)
 {
     string s;
-
-    if(Fun == I_Format_Fun)
+    if (Fun == DMA_FORMAT)
+    {
+        if(instruction[0] == 3)
+        {
+            s += assemble(instruction[0],2) ; // opcode
+            s += assemble(instruction[1],10) ; // source
+            s += assemble(instruction[2],10) ; // distination
+            s += assemble(instruction[3],10); // count
+        }
+        else
+        {
+            s += assemble(instruction[0],2); // count
+            s += assemble(instruction[1],30); // count
+        }
+    }
+    else if(Fun == I_Format_Fun)
     {
         s += assemble(instruction[0],6) ; // opcode
         s += assemble(instruction[1],5) ; // registers

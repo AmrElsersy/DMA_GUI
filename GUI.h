@@ -79,7 +79,7 @@ public slots:
     void memory_Memory_Slot();
     void simulate_Slot();
     void open_Slot();
-//    void save_Slot();
+   // void save_Slot();
     void file_Is_Selected(const QString);
 };
 

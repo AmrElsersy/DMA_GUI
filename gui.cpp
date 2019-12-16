@@ -173,12 +173,16 @@ void Gui::memory_Memory_Slot()
     }
     else
     {
-        plainText->appendPlainText("init mem mem");
+        plainText->appendPlainText("INIT_MEM_MEM ," + (source->selectedText()) + QString(" ,") + (destination->selectedText())
+                                   + QString(" ,")  + (count->selectedText()));
     }
 }
 
 void Gui::simulate_Slot()
 {
+    this->simulator->clear();
+    this->assemblyCode.clear();
+
     QStringList *list = new QStringList();
 
     QString *temp = new QString(plainText->toPlainText());
@@ -218,12 +222,7 @@ void Gui::file_Is_Selected(const QString processFile)
        plainText->insertPlainText(list.at(i));
        i++;
     }
-
-
-
-
-//    errorMessage->setInformativeText(list.at(1));
-//    errorMessage->show();
+    assemblyFile.close();
 }
 
 
