@@ -78,6 +78,10 @@ public:
     void drawButtons();
     void drawLineEdit();
     void drawPlainText();
+    void adjustButtons();
+    void adjustErrorBox();
+    void adjustPlainText();
+    void adjustLineEdit();
 
     void connections();
     QGridLayout* getMainGrid();

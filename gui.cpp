@@ -1,4 +1,4 @@
-#include "gui.h"
+#include "GUI.h"
 
 /************* Fucntion Prototypes ************/
 
@@ -39,6 +39,11 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
     drawLineEdit();
     drawPlainText();
     connections();
+    adjustButtons();
+    adjustErrorBox();
+    adjustPlainText();
+    adjustLineEdit();
+
 
     this->setLayout(this->systemGrid);
 
@@ -115,6 +120,48 @@ void Gui::drawPlainText()
     plainText->setBackgroundVisible(true);
     systemGrid->addWidget(plainText,1,1,5,3);
 }
+
+void Gui::adjustButtons()
+{   //memoryIO ->setStyleSheet(" background-color:black;border-radius:10%; ");
+    memoryIO ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+    IOMemory ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+    MemtoMem->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+    open->setStyleSheet(" QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}  ");
+    save->setStyleSheet("QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}  ");
+    simulate->setStyleSheet(" QPushButton{background-color:rgba(143, 202, 236, 0.849);border-radius:10%;font-size: 23px;}QPushButton:hover { background-color:white;border-radius:10%; color:rgba(55, 192, 255, 0.849) ;border-width: 0.5px; border-style: solid; border-color: rgba(55, 192, 255, 0.849) ;} ");
+    programDMA->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+
+}
+
+void Gui::adjustErrorBox()
+{
+    errorMessage->setStyleSheet("background-color:rgba(224, 224, 224, 0.849); color:rgba(167, 0, 0, 0.849);");
+
+}
+
+void Gui::adjustPlainText()
+{
+    plainText->setStyleSheet("background-color:rgba(255, 254, 219, 0.849); font-size: 15px;");
+
+}
+
+void Gui::adjustLineEdit()
+{
+    BWRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    source->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    destination->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    count->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+
+    BWCRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    commandRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    modeRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    maskRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    requestRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+}
+
+
+
+
 
 void Gui::connections()
 {
@@ -254,6 +301,16 @@ void Gui::program_DMA_Slot()
     {
         errorMessage->setInformativeText("Please Specify Registers Value Within Range");
         errorMessage->show();
+    }
+    else
+    {
+        plainText->insertPlainText("INIT_PROGRAM_MEM \n");
+        plainText->insertPlainText(BWRegister->text() +"\n");
+        plainText->insertPlainText(BWCRegister->text() +"\n");
+        plainText->insertPlainText(commandRegister->text() +"\n");
+        plainText->insertPlainText(maskRegister->text() +"\n");
+        plainText->insertPlainText(modeRegister->text() +"\n");
+        plainText->insertPlainText(requestRegister->text() +"\n");
     }
 }
 
