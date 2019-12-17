@@ -99,8 +99,16 @@ Painter::Painter(QObject *parent) : QObject(parent)
     init_Modules();
     init_BUSs();
     init_Text();
+
+    this->setCPU_Color(Qt::yellow);
+
 }
 
+void Painter::setMasterColor(QColor clr)
+{
+    this->setAddressBusColor(clr);
+    this->setControlBusColor(clr);
+}
 void Painter::setDataBusColor(QColor clr)
 {
     for(auto i = this->Data_Bus.begin() ; i != this->Data_Bus.end() ; i++)
@@ -115,6 +123,60 @@ void Painter::setControlBusColor(QColor clr)
 {
     for(auto i = this->Control.begin() ; i != this->Control.end() ; i++)
         i->second->setColor(clr);
+}
+
+void Painter::setHOLD_Color(QColor clr)
+{
+    this->Paths["HOLD"]->setColor(clr);
+}
+void Painter::setHOLD_ACK_Color(QColor clr)
+{
+    this->Paths["HOLD_ACK"]->setColor(clr);
+}
+void Painter::setDREQ_IO1_Color(QColor clr)
+{
+    this->Paths["DREQ_IO1"]->setColor(clr);
+}
+void Painter::setDACK_IO1_Color(QColor clr)
+{
+    this->Paths["DACK_IO1"]->setColor(clr);
+}
+void Painter::setDREQ_IO2_Color(QColor clr)
+{
+    this->Paths["DREQ_IO2"]->setColor(clr);
+}
+void Painter::setDACK_IO2_Color(QColor clr)
+{
+    this->Paths["DACK_IO2"]->setColor(clr);
+}
+void Painter::setCPU_Color(QColor clr)
+{
+    this->pen = QPen(clr);
+    this->CPU->setPen(this->pen);
+}
+
+void Painter::setDMA_Color(QColor clr)
+{
+    this->pen = QPen(clr);
+    this->DMA->setPen(this->pen);
+}
+
+void Painter::setRAM_Color(QColor clr)
+{
+    this->pen = QPen(clr);
+    this->RAM->setPen(this->pen);
+}
+
+void Painter::setIO1_Color(QColor clr)
+{
+    this->pen = QPen(clr);
+    this->IO_1->setPen(this->pen);
+}
+
+void Painter::setIO2_Color(QColor clr)
+{
+    this->pen = QPen(clr);
+    this->IO_2->setPen(this->pen);
 }
 Path *Painter::newPath(vector<string> points)
 {

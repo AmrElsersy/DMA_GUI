@@ -2,7 +2,6 @@
 #define SCENE_H
 
 #define MAX_TOP_LEFT_CORNER -984,-446
-#define OFF_COLOR QColor(70,70,70)
 
 
 #include <QCoreApplication>

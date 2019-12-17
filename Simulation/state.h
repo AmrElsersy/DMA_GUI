@@ -2,20 +2,6 @@
 #define STATE_H
 
 #define INITIAL_COLOR QColor(70,70,70)
-#define CPU_COLOR QColor(Qt::red)
-#define DMA_COLOR QColor(Qt::yellow)
-#define RAM_COLOR QColor(50,200,0)
-#define IO1_COLOR QColor(Qt::blue)
-#define IO2_COLOR QColor(Qt::green)
-
-#define RAM_ADDRESS_START 0
-#define RAM_ADDRESS_END 1023
-#define IO1_ADDRESS_START 1024
-#define IO1_ADDRESS_END 1056
-#define IO2_ADDRESS_START 1057
-#define IO2_ADDRESS_END 1089
-#define DMA_ADDRESS_START 1090
-#define DMA_ADDRESS_END 1115
 
 #include <QWidget>
 #include <QObject>

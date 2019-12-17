@@ -1,6 +1,22 @@
 #ifndef PAINTER_H
 #define PAINTER_H
 
+#define OFF_COLOR QColor(70,70,70)
+#define CPU_COLOR QColor("#BDB76B")
+#define DMA_COLOR QColor(Qt::darkCyan)
+#define RAM_COLOR QColor(Qt::darkRed)
+#define IO1_COLOR QColor("#808000")
+#define IO2_COLOR QColor("#483D8B")
+
+#define RAM_ADDRESS_START 0
+#define RAM_ADDRESS_END 1023
+#define IO1_ADDRESS_START 1024
+#define IO1_ADDRESS_END 1056
+#define IO2_ADDRESS_START 1057
+#define IO2_ADDRESS_END 1089
+#define DMA_ADDRESS_START 1090
+#define DMA_ADDRESS_END 1115
+
 #include <QObject>
 #include <QWidget>
 #include "path.h"
@@ -38,6 +54,7 @@ private:
 public:
     Painter(QObject *parent);
     // BUS
+    void setMasterColor(QColor);
     void setDataBusColor(QColor);
     void setAddressBusColor(QColor);
     void setControlBusColor(QColor);
