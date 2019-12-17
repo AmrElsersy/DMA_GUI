@@ -1,6 +1,10 @@
 #ifndef PATH_H
 #define PATH_H
 #define PATH_WIDTH 4
+#define TEXT_COLOR Qt::white
+#define SMALL_FONT_SIZE 10
+#define FONT_SIZE 14
+#define INITIAL_PATH_COLOR QColor(Qt::gray)
 
 #include <QPointF>
 #include <QPoint>

@@ -15,12 +15,14 @@
 #include <QGridLayout>
 
 #include "GUI.h"
+#include "Simulation/view.h"
 
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
+    View* view;
     Gui* gui;
 public:
     MainWindow(QWidget *parent = nullptr);

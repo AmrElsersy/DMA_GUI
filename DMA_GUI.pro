@@ -20,6 +20,7 @@ SOURCES += \
     Assembler/register.cpp \
     Assembler/register_file.cpp \
     Assembler/simulator.cpp \
+    Simulation/painter.cpp \
     Simulation/path.cpp \
     Simulation/scene.cpp \
     Simulation/state.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     Assembler/register_file.h \
     Assembler/simulator.h \
     GUI.h \
+    Simulation/painter.h \
     Simulation/path.h \
     Simulation/scene.h \
     Simulation/state.h \

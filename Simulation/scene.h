@@ -2,31 +2,23 @@
 #define SCENE_H
 
 #define MAX_TOP_LEFT_CORNER -984,-446
-#define WIDTH_MUX 1
-#define MUXs_SIZE 6
+#define OFF_COLOR QColor(70,70,70)
 
-#define fetch 0
-#define decode 1
-#define ex 2
-#define memory 3
-#define wb 4
 
-#define PC_POS 0
-#define STALL 1
-#define FLUSH 2
 #include <QCoreApplication>
-#include "path.h"
 
 #include <fstream>
 #include <QPushButton>
-#include <QGraphicsProxyWidget>
 #include <QHBoxLayout>
 #include <QTimer>
 #include <QProgressBar>
+#include <QGraphicsProxyWidget>
 
 using namespace std;
 
+#include "path.h"
 #include "state.h"
+#include "painter.h"
 
 class myScene : public QGraphicsScene
 {
@@ -37,19 +29,19 @@ private:
     bool play;
     vector<string> code;
 
-    uint index; // state index
+    // painter for our circut
+    Painter* DMA_Painter;
+    // states
+    uint index;
     vector<State> states;
-
-
+    // reading verilog data each clock cycle
     string verilogPath;
     ifstream verilog_file;
-
     vector<string> clocks_verilog;
     uint max_clocks;
-
+    // ray2
     QImage image;
     QIcon icon;
-
     QProgressBar* progressBar;
 
 public:
@@ -69,7 +61,7 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
-    void drawBackground(QPainter *painter, const QRectF &rect) override;
+//    void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 public slots:
     void INIT_Scene(vector<string>);
@@ -77,6 +69,7 @@ public slots:
     void leftButton();
     void playButton();
     void continuous_play();
+    void addNewItem(QGraphicsItem * item);
 
 };
 

@@ -17,8 +17,6 @@
 #define DMA_ADDRESS_START 1090
 #define DMA_ADDRESS_END 1115
 
-
-
 #include <QWidget>
 #include <QObject>
 #include <QWidget>

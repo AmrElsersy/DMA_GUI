@@ -4,5 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)    : QMainWindow(parent)
 {
     this->gui = new Gui();
-    this->setCentralWidget(this->gui);
+    this->view = new View();
+//    this->setCentralWidget(this->view);
+    this->view->show();
 }

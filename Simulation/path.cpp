@@ -16,7 +16,7 @@ Path::Path(vector<string> string_points): QObject() , QGraphicsPathItem()
             temp_path.lineTo(points[i]);
 
     // initail the color
-    this->color = Qt::black;
+    this->color = INITIAL_PATH_COLOR;
     this->pen = QPen(this->color);
     this->pen.setWidth(PATH_WIDTH);
 

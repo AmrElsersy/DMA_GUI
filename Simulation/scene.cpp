@@ -2,24 +2,25 @@
 
 myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000,parent)
 {
-    QString image_path = QCoreApplication::applicationDirPath()+"/../../DMA_GUI/DMA.png";
-    this->image = QImage(image_path);
-
+    // MSH MOHEM
     // cursor for printing points coordinates
     this->cursor = new QGraphicsTextItem();
     this->cursor->setPos(600,-350);
     this->addItem(this->cursor);
-    // MIPS Pipeline Image
-
-    this->initColors();
+    QString image_path = QCoreApplication::applicationDirPath()+"/../../DMA_GUI/DMA.png";
+    this->image = QImage(image_path);
 
     this->index = 0;
-
+    this->initColors();
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
-//    this->initButtons();
+
+    this->DMA_Painter = new Painter(this);
 
 }
-
+//void myScene::drawBackground(QPainter *painter, const QRectF &rect)
+//{
+//    painter->drawImage(QRectF(-900,-400,1600,900),this->image);
+//}
 void myScene::updateStates(int direction)
 {
 
@@ -42,8 +43,17 @@ void myScene::updateStates(int direction)
         this->index --;
     }
 
+    /*
+     * iterate at every state element
+     * code kteeeeeeeeeeeeeeeer
+     */
+
 
     this->progressBar->setValue(this->index);
+}
+void myScene::addNewItem(QGraphicsItem * item)
+{
+    this->addItem(item);
 }
 void myScene::INIT_Scene(vector<string> Code)
 {
@@ -217,10 +227,6 @@ void myScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
     this->cursor->setPlainText(s);
     this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
     cout << point.x() << "," << point.y() << endl ;
-}
-void myScene::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    painter->drawImage(QRectF(-1000,-475,1800,1000),this->image);
 }
 void myScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

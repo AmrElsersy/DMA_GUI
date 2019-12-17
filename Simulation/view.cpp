@@ -3,7 +3,7 @@
 View :: View(QWidget* parent) : QGraphicsView(parent)
 {
     this->setFixedSize(QSize(1920,1000));
-    this->my_scene= new myScene(this);
+    this->my_scene= new myScene();
     this->setScene(this->my_scene);
 }
 
