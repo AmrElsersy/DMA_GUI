@@ -12,6 +12,7 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
     MemtoMem = new QPushButton("Memory - Memory");
     open = new QPushButton("Open");
     save = new QPushButton("Save");
+    programDMA = new QPushButton("Program DMA");
 
     simulate = new QPushButton("Simulate");
 
@@ -24,6 +25,14 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
     systemGrid = new QGridLayout();
 
     errorMessage = new QMessageBox();
+
+    //Alocating register objects
+    BWRegister = new QLineEdit();
+    BWCRegister = new QLineEdit();
+    commandRegister = new QLineEdit();
+    modeRegister = new QLineEdit();
+    maskRegister = new QLineEdit();
+    requestRegister = new QLineEdit();
 
     // Calling proper functions
     drawButtons();
@@ -45,7 +54,8 @@ void Gui::drawButtons()
     MemtoMem->setMinimumSize(100,100);
     open->setMinimumSize(100,100);
     save->setMinimumSize(100,100);
-    simulate->setMinimumSize(200,200);
+    simulate->setMinimumSize(100,100);
+    programDMA->setMinimumSize(100,100);
 
     memoryIO->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
     IOMemory->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
@@ -57,7 +67,9 @@ void Gui::drawButtons()
     systemGrid->addWidget(memoryIO,2,4,1,3);
     systemGrid->addWidget(IOMemory,3,4,1,3);
     systemGrid->addWidget(MemtoMem,4,4,1,3);
+    systemGrid->addWidget(programDMA,5,4,1,3);
     systemGrid->addWidget(simulate,6,4,1,3);
+
 
     //systemGrid->setContentsMargins(7,7,7,7);
 
@@ -71,14 +83,28 @@ void Gui::drawLineEdit()
     destination->setPlaceholderText("Destination Field");
     count->setPlaceholderText("Count Field");
 
-    source->setMinimumSize(80,100);
-    destination->setMinimumSize(80,100);
-    count->setMinimumSize(80,100);
+    BWRegister->setPlaceholderText("Base Word Register");
+    BWCRegister->setPlaceholderText("Base Word Count Register");
+    commandRegister->setPlaceholderText("Command Register");
+    modeRegister->setPlaceholderText("Mode Register");
+    maskRegister->setPlaceholderText("Mask Register");
+    requestRegister->setPlaceholderText("Request Register");
+
+//    source->setMinimumSize(80,100);
+//    destination->setMinimumSize(80,100);
+//    count->setMinimumSize(80,100);
+
 
     systemGrid->addWidget(source,6,1,1,1);
     systemGrid->addWidget(destination,6,2,1,1);
     systemGrid->addWidget(count,6,3,1,1);
 
+    systemGrid->addWidget(BWRegister,0,4,1,1);
+    systemGrid->addWidget(BWCRegister,0,5,1,1);
+    systemGrid->addWidget(commandRegister,0,6,1,1);
+    systemGrid->addWidget(modeRegister,1,4,1,1);
+    systemGrid->addWidget(maskRegister,1,5,1,1);
+    systemGrid->addWidget(requestRegister,1,6,1,1);
 
 }
 
@@ -109,11 +135,15 @@ void Gui::connections()
      */
     connect(simulate,SIGNAL(clicked()),this,SLOT(simulate_Slot()));
 
-    /*
-     *
+    /* Connecting open file siganls to their proper slots,
+     * when file is selected; a path is returned to
+     * file_selected_slot as a const string
      */
     connect(open,SIGNAL(clicked()),this,SLOT(open_Slot()));
     connect(dialogFile,SIGNAL(fileSelected(QString)),this,SLOT(file_Is_Selected(const QString)));
+
+    //
+    connect(programDMA,SIGNAL(clicked()),this,SLOT(program_DMA_Slot()));
 
 
 
@@ -127,13 +157,13 @@ QGridLayout* Gui::getMainGrid()
 void Gui::memory_IO_Slot()
 {
 
-    plainText->appendPlainText("init mem write");
+    plainText->appendPlainText("INIT_MEM_IO");
 
 }
 
 void Gui::io_Memory_Slot()
 {
-    plainText->appendPlainText("init mem read");
+    plainText->appendPlainText("INIT_IO_MEM");
 }
 
 void Gui::memory_Memory_Slot()
@@ -204,6 +234,27 @@ void Gui::open_Slot()
     dialogFile->setViewMode(QFileDialog::List);
     dialogFile->setFileMode(QFileDialog::ExistingFile);
     dialogFile->show();
+}
+
+void Gui::program_DMA_Slot()
+{
+    if(BWRegister->isModified()!=1 || BWCRegister->isModified()!=1 ||
+       commandRegister->isModified()!=1 || maskRegister->isModified()!=1 ||
+       modeRegister->isModified()!=1 || requestRegister->isModified()!=1 )
+    {
+        errorMessage->setInformativeText("Please Specify All Registers");
+        errorMessage->show();
+    }
+    else if (BWRegister->text().toInt() > MAX_REGISTER_VALUE ||
+             BWCRegister->text().toInt() > MAX_REGISTER_VALUE ||
+             commandRegister->text().toInt() > MAX_REGISTER_VALUE ||
+             maskRegister->text().toInt() > MAX_REGISTER_VALUE ||
+             modeRegister->text().toInt() > MAX_REGISTER_VALUE ||
+             requestRegister->text().toInt() > MAX_REGISTER_VALUE)
+    {
+        errorMessage->setInformativeText("Please Specify Registers Value Within Range");
+        errorMessage->show();
+    }
 }
 
 void Gui::file_Is_Selected(const QString processFile)
