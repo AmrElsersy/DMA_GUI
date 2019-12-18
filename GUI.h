@@ -87,10 +87,10 @@ public:
     void adjustErrorBox();
     void adjustPlainText();
     void adjustLineEdit();
+    void adjustGrid();
     void handleToolBar();
 
     void connections();
-    QGridLayout* getMainGrid();
 
 
 signals:

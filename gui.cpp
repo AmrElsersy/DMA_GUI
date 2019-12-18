@@ -47,6 +47,7 @@ Gui::Gui(QWidget *parent) : QWidget(parent){
     adjustPlainText();
     adjustLineEdit();
     handleToolBar();
+    adjustGrid();
 
 
     this->setLayout(this->systemGrid);
@@ -77,17 +78,6 @@ void Gui::drawLineEdit()
     maskRegister->setPlaceholderText("Mask Register");
     requestRegister->setPlaceholderText("Request Register");
 
-    systemGrid->addWidget(source,6,1,1,1);
-    systemGrid->addWidget(destination,6,2,1,1);
-    systemGrid->addWidget(count,6,3,1,1);
-
-    systemGrid->addWidget(BWRegister,0,4,1,1);
-    systemGrid->addWidget(BWCRegister,0,5,1,1);
-    systemGrid->addWidget(commandRegister,0,6,1,1);
-    systemGrid->addWidget(modeRegister,1,4,1,1);
-    systemGrid->addWidget(maskRegister,1,5,1,1);
-    systemGrid->addWidget(requestRegister,1,6,1,1);
-
 }
 
 void Gui::drawPlainText()
@@ -95,41 +85,36 @@ void Gui::drawPlainText()
 
     plainText->setPlaceholderText("Insert Assembly Instructions");
     plainText->setBackgroundVisible(true);
-    systemGrid->addWidget(plainText,1,1,5,3);
+
 }
 
 void Gui::adjustButtons()
 {
     // Adjusting button sizes
-    memoryIO->setMinimumSize(100,100);
-    IOMemory->setMinimumSize(100,100);
-    MemtoMem->setMinimumSize(100,100);
-    open->setMinimumSize(100,100);
-    simulate->setMinimumSize(100,100);
-    programDMA->setMinimumSize(100,100);
+//    memoryIO->setMinimumSize(100,100);
+//    IOMemory->setMinimumSize(100,100);
+//    MemtoMem->setMinimumSize(100,100);
+//    open->setMinimumSize(100,100);
+//    simulate->setMinimumSize(100,100);
+//    programDMA->setMinimumSize(100,100);
 
-    memoryIO->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
-    IOMemory->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
-    MemtoMem->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
+//    memoryIO->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
+//    IOMemory->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
+//    MemtoMem->setIcon(QIcon("C:/Users/Ayman/Desktop/ButtonIcon.png"));
 
-    memoryIO ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
-    IOMemory ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
-    MemtoMem->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
-    open->setStyleSheet(" QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}  ");
-    simulate->setStyleSheet(" QPushButton{background-color:rgba(143, 202, 236, 0.849);border-radius:10%;font-size: 23px;}QPushButton:hover { background-color:white;border-radius:10%; color:rgba(55, 192, 255, 0.849) ;border-width: 0.5px; border-style: solid; border-color: rgba(55, 192, 255, 0.849) ;} ");
-    programDMA->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+//    memoryIO ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+//    IOMemory ->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+//    MemtoMem->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
+//    open->setStyleSheet(" QPushButton{ background-color:rgba(125, 219, 70, 0.904);border-radius:10%;font-size: 17px;} QPushButton:hover { background-color: rgba(32, 99, 30, 0.849); border-radius:10%; color:white;}  ");
+//    simulate->setStyleSheet(" QPushButton{background-color:rgba(143, 202, 236, 0.849);border-radius:10%;font-size: 23px;}QPushButton:hover { background-color:white;border-radius:10%; color:rgba(55, 192, 255, 0.849) ;border-width: 0.5px; border-style: solid; border-color: rgba(55, 192, 255, 0.849) ;} ");
+//    programDMA->setStyleSheet(" QPushButton{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; font-size: 17px;} QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
 
 }
 
 void Gui::adjustErrorBox()
 {
-//    QSize size;
-//    size.setWidth(1000);
-//    size.setHeight(1000);
-
     errorMessage->setWindowTitle("Informative Message");
     errorMessage->setIcon(QMessageBox::Warning);
-    //errorMessage->setIconPixmap(*pixMap);
     errorMessage->setStyleSheet("background-color:rgba(224, 224, 224, 0.849); color:rgba(167, 0, 0, 0.849);");
 
 }
@@ -158,6 +143,30 @@ void Gui::adjustLineEdit()
     requestRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
 }
 
+void Gui::adjustGrid()
+{
+    // QLineEdit widgets
+    systemGrid->addWidget(source,5,1,-1,1);
+    systemGrid->addWidget(destination,5,2,-1,1);
+    systemGrid->addWidget(count,5,3,-1,1);
+
+    systemGrid->addWidget(BWRegister,5,4,1,1);
+    systemGrid->addWidget(BWCRegister,5,5,1,1);
+    systemGrid->addWidget(commandRegister,5,6,1,1);
+    systemGrid->addWidget(modeRegister,6,4,1,1);
+    systemGrid->addWidget(maskRegister,6,5,1,1);
+    systemGrid->addWidget(requestRegister,6,6,1,1);
+
+    // QPlainText widget
+    systemGrid->addWidget(plainText,0,1,5,-1);
+
+    // QToolBar widget
+    systemGrid->addWidget(toolBar,0,0,-1,1);
+
+
+
+}
+
 void Gui::handleToolBar()
 {
     QIcon I_MemIO("C:/Users/Ayman/Desktop/Icons/floppy-disk.png"); QString S_MemIO("Memory IO");
@@ -179,12 +188,6 @@ void Gui::handleToolBar()
     toolBar->addAction(I_IOMem,S_IOMem);
     toolBar->addAction(I_Mem_Mem,S_Mem_Mem);
     toolBar->addAction(I_ProgramDMA,S_ProgramDMA);
-
-
-
-    systemGrid->addWidget(toolBar,0,0,1,1);
-
-
 
 }
 
@@ -226,11 +229,6 @@ void Gui::connections()
 
 
 
-}
-
-QGridLayout* Gui::getMainGrid()
-{
-    return systemGrid;
 }
 
 void Gui::memory_IO_Slot()
@@ -336,7 +334,7 @@ void Gui::program_DMA_Slot()
     }
     else
     {
-        plainText->insertPlainText("INIT_PROGRAM_MEM \n");
+        plainText->insertPlainText("\nINIT_PROGRAM_MEM \n");
         plainText->insertPlainText(BWRegister->text() +"\n");
         plainText->insertPlainText(BWCRegister->text() +"\n");
         plainText->insertPlainText(commandRegister->text() +"\n");
@@ -367,116 +365,31 @@ void Gui::file_Is_Selected(const QString processFile)
 
 void Gui::tool_Bar_Slot(QAction *actionTrig)
 {
-    if(actionTrig->text() == "Open")
+    if(actionTrig->text() == ("Open"))
     {
-        dialogFile->setNameFilter("*.txt");
-        dialogFile->setAcceptMode(QFileDialog::AcceptOpen);
-        dialogFile->setViewMode(QFileDialog::List);
-        dialogFile->setFileMode(QFileDialog::ExistingFile);
-        dialogFile->show();
+        open_Slot();
+    }
+    else if (actionTrig->text() == ("Simulate"))
+    {
+        simulate_Slot();
+    }
+    else if (actionTrig->text() == ("Memory IO"))
+    {
+        memory_IO_Slot();
+    }
+    else if (actionTrig->text() == ("IO Memory"))
+    {
+        io_Memory_Slot();
+    }
+    else if (actionTrig->text() == ("Memory Memory"))
+    {
+        memory_Memory_Slot();
+    }
+    else if (actionTrig->text() == ("Program DMA"))
+    {
+        program_DMA_Slot();
+    }
 
-    }
-    else if (actionTrig->text() == "Simulate")
-    {
-        this->simulator->clear();
-        this->assemblyCode.clear();
-
-        QStringList *list = new QStringList();
-
-        QString *temp = new QString(plainText->toPlainText());
-        list->append(temp->split("\n"));
-
-        for (int i =0;i<list->size();i++)
-        {
-            assemblyCode.push_back(list->at(i).toStdString());
-        }
-        this->simulator->ASSEMBLY(assemblyCode);
-        delete list;
-        delete temp;
-    }
-    else if (actionTrig->text() == "Memory IO")
-    {
-        plainText->appendPlainText("INIT_MEM_IO");
-    }
-    else if (actionTrig->text() == "IO Memory")
-    {
-        plainText->appendPlainText("INIT_IO_MEM");
-    }
-    else if (actionTrig->text() == "Memory Memory")
-    {
-        // Checking if source, destination & count are specified or not
-        if(source->isModified() != 1)
-        {
-            errorMessage->setInformativeText("Please Specify Source Field");
-            errorMessage->show();
-        }
-        else if(destination->isModified() != 1)
-        {
-           errorMessage->setInformativeText("Please Specify Destination Field");
-           errorMessage->show();
-        }
-
-        else if(count->isModified() != 1)
-        {
-            errorMessage->setInformativeText("Please Specify Count Field");
-            errorMessage->show();
-        }
-        /* Checking if source, destination & count within available transfer range or not
-         * Assuming our range from location 64 to 1023 & count ranges from 1 to 512
-         */
-        else if (source->text().toInt()<MIN_TRANSFER_LOCATION ||
-                 destination->text().toInt()>MAX_TRANSFER_LOCATION)
-        {
-            //errorMessage->setInformativeText(source->text());
-            errorMessage->setInformativeText("Please Specify Within Allowed Range \nSource :384 \n "
-                                             "Destination: 65,536‬ ");
-            errorMessage->show();
-        }
-        else if (count->text().toInt() <= 0 || count->text().toInt() >= MAX_TRANSFER_BYTES)
-        {
-            errorMessage->setInformativeText("Please Specify A Correct Count Value ");
-            errorMessage->show();
-        }
-        else
-        {
-            plainText->appendPlainText("INIT_MEM_MEM " + (source->text()) + QString(" ,") + (destination->text())
-                                       + QString(" ,")  + (count->text()));
-        }
-    }
-    else if (actionTrig->text() == "Program DMA")
-    {
-        if(BWRegister->isModified()!=1 || BWCRegister->isModified()!=1 ||
-           commandRegister->isModified()!=1 || maskRegister->isModified()!=1 ||
-           modeRegister->isModified()!=1 || requestRegister->isModified()!=1 )
-        {
-            errorMessage->setInformativeText("Please Specify All Registers");
-            errorMessage->show();
-        }
-        else if (BWRegister->text().toInt() > MAX_REGISTER_VALUE ||
-                 BWCRegister->text().toInt() > MAX_REGISTER_VALUE ||
-                 commandRegister->text().toInt() > MAX_REGISTER_VALUE ||
-                 maskRegister->text().toInt() > MAX_REGISTER_VALUE ||
-                 modeRegister->text().toInt() > MAX_REGISTER_VALUE ||
-                 requestRegister->text().toInt() > MAX_REGISTER_VALUE)
-        {
-            errorMessage->setInformativeText("Please Specify Registers Value Within Range");
-            errorMessage->show();
-        }
-        else
-        {
-            plainText->insertPlainText("\nINIT_PROGRAM_MEM \n");
-            plainText->insertPlainText(BWRegister->text() +"\n");
-            plainText->insertPlainText(BWCRegister->text() +"\n");
-            plainText->insertPlainText(commandRegister->text() +"\n");
-            plainText->insertPlainText(maskRegister->text() +"\n");
-            plainText->insertPlainText(modeRegister->text() +"\n");
-            plainText->insertPlainText(requestRegister->text() +"\n");
-        }
-    }
-    else
-    {
-
-    }
 }
 
 
