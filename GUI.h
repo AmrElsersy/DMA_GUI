@@ -16,6 +16,10 @@
 #include <QStringList>
 #include <QFile>
 #include <math.h>
+#include <QSize>
+#include <QToolBar>
+#include <QAction>
+#include <QFont>
 
 #include "Assembler/simulator.h"
 #include <bits/stdc++.h>
@@ -40,7 +44,6 @@ private:
     QPushButton *MemtoMem;
     QPushButton *simulate;
     QPushButton *open;
-    QPushButton *save;
     QPushButton *programDMA;
 
 
@@ -68,6 +71,8 @@ private:
 
     QFileDialog *dialogFile;
 
+    QToolBar *toolBar;
+
     // Vector of strings which holds program assembly code
     vector<string> assemblyCode;
 
@@ -82,6 +87,7 @@ public:
     void adjustErrorBox();
     void adjustPlainText();
     void adjustLineEdit();
+    void handleToolBar();
 
     void connections();
     QGridLayout* getMainGrid();
@@ -97,7 +103,9 @@ public slots:
     void open_Slot();
     void program_DMA_Slot();
     void file_Is_Selected(const QString);
-    // void save_Slot();
+
+    void tool_Bar_Slot(QAction*);
+
 };
 
 #endif // GUI_H

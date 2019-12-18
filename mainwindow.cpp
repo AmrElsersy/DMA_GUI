@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)    : QMainWindow(parent)
 {
     this->gui = new Gui();
     this->view = new View();
-//    this->setCentralWidget(this->view);
-    this->view->show();
+    this->setCentralWidget(this->gui);
+    //this->setCentralWidget(this->view);
+    //this->view->show();
 }
