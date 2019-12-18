@@ -277,20 +277,24 @@ void Gui::memory_Memory_Slot()
     /* Checking if source, destination & count within available transfer range or not
      * Assuming our range from location 64 to 1023 & count ranges from 1 to 512
      */
-    else if (source->text().toInt()<MIN_TRANSFER_LOCATION ||
+    else if ((source->text().toInt()<MIN_TRANSFER_LOCATION && source->text().toInt() > 0) ||
              destination->text().toInt()>MAX_TRANSFER_LOCATION)
     {
-        //errorMessage->setInformativeText(source->text());
+
         errorMessage->setInformativeText("Please Specify Within Allowed Range \nSource :384 \n "
                                          "Destination: 65,536‬ ");
         errorMessage->show();
     }
-    else if (count->text().toInt() <= 0 || count->text().toInt() >= MAX_TRANSFER_BYTES)
+    else if (count->text().toInt() == 0 || count->text().toInt() >= MAX_TRANSFER_BYTES)
     {
         errorMessage->setInformativeText("Please Specify A Correct Count Value ");
         errorMessage->show();
     }
-
+    else if (count->text().toInt() <0 || source->text().toInt() <0 || destination->text().toInt() <0)
+    {
+        errorMessage->setInformativeText("Please Specify A Non Negative Memory Locations Value");
+        errorMessage->show();
+    }
     else
     {
         plainText->appendPlainText("INIT_MEM_MEM " + (source->text()) + QString(" ,") + (destination->text())
@@ -343,6 +347,16 @@ void Gui::program_DMA_Slot()
              requestRegister->text().toInt() > MAX_REGISTER_VALUE)
     {
         errorMessage->setInformativeText("Please Specify Registers Value Within Range");
+        errorMessage->show();
+    }
+    else if (BWRegister->text().toInt() <0      ||
+             BWCRegister->text().toInt() <0     ||
+             commandRegister->text().toInt() <0 ||
+             maskRegister->text().toInt() <0    ||
+             modeRegister->text().toInt() <0    ||
+             requestRegister->text().toInt() <0)
+    {
+        errorMessage->setInformativeText("Please Specify A Non Negative Registers Value");
         errorMessage->show();
     }
     else
