@@ -71,12 +71,12 @@ void Gui::drawLineEdit()
     destination->setPlaceholderText("Destination Field");
     count->setPlaceholderText("Count Field");
 
-    BWRegister->setPlaceholderText("Base Word Register");
-    BWCRegister->setPlaceholderText("Base Word Count Register");
-    commandRegister->setPlaceholderText("Command Register");
-    modeRegister->setPlaceholderText("Mode Register");
-    maskRegister->setPlaceholderText("Mask Register");
-    requestRegister->setPlaceholderText("Request Register");
+    BWRegister->setPlaceholderText("Base Word Reg");
+    BWCRegister->setPlaceholderText("Base Word Count Reg");
+    commandRegister->setPlaceholderText("Command Reg");
+    modeRegister->setPlaceholderText("Mode Reg");
+    maskRegister->setPlaceholderText("Mask Reg");
+    requestRegister->setPlaceholderText("Request Reg");
 
 }
 
@@ -114,8 +114,9 @@ void Gui::adjustButtons()
 void Gui::adjustErrorBox()
 {
     errorMessage->setWindowTitle("Informative Message");
-    errorMessage->setIcon(QMessageBox::Warning);
-    errorMessage->setStyleSheet("background-color:rgba(224, 224, 224, 0.849); color:rgba(167, 0, 0, 0.849);");
+    errorMessage->setWindowIcon(QIcon("C:/Users/Ayman/Desktop/Icons/triangle.png"));
+    errorMessage->setTextFormat(Qt::TextFormat::RichText);
+    errorMessage->setStyleSheet("background-color:rgba(224, 224, 224, 0.849); color:rgba(255, 0, 0, 0.849);");
 
 }
 
@@ -130,6 +131,13 @@ void Gui::adjustLineEdit()
     source->setMinimumSize(100,100);
     destination->setMinimumSize(100,100);
     count->setMinimumSize(100,100);
+
+    BWRegister->setMinimumSize(50,50);
+    BWCRegister->setMinimumSize(50,50);
+    commandRegister->setMinimumSize(50,50);
+    modeRegister->setMinimumSize(50,50);
+    maskRegister->setMinimumSize(50,50);
+    requestRegister->setMinimumSize(50,50);
 
     source->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
     destination->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
@@ -175,6 +183,10 @@ void Gui::handleToolBar()
     QIcon I_ProgramDMA("C:/Users/Ayman/Desktop/Icons/ButtonIcon.png"); QString S_ProgramDMA("Program DMA");
     QIcon I_Simulate("C:/Users/Ayman/Desktop/Icons/round-play-button.png"); QString S_Simulate("Simulate");
     QIcon I_Open("C:/Users/Ayman/Desktop/Icons/open-folder-with-document.png"); QString S_Open("Open");
+
+    toolBar->setStyleSheet("QToolBar{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; "
+                           "font-size: 17px;} QToolButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; "
+                           "border-color: gray ;}");
 
     toolBar->setIconSize(QSize(70,70));
     toolBar->setOrientation(Qt::Vertical);
@@ -278,6 +290,7 @@ void Gui::memory_Memory_Slot()
         errorMessage->setInformativeText("Please Specify A Correct Count Value ");
         errorMessage->show();
     }
+
     else
     {
         plainText->appendPlainText("INIT_MEM_MEM " + (source->text()) + QString(" ,") + (destination->text())
