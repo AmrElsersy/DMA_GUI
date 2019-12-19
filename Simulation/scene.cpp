@@ -246,7 +246,7 @@ void myScene::initStates()
             state.IO1Color = IO1_COLOR;
             state.DREQ_IO_1 = IO1_COLOR;
         }
-        if(DREQ_IO2 == 2)
+        if(DREQ_IO2 == 1)
         {
             state.IO2Color = IO2_COLOR;
             state.DREQ_IO_2 = IO2_COLOR;
@@ -264,7 +264,7 @@ void myScene::initStates()
                 state.PrinterTextColor = RAM_COLOR;
             }
         }
-        if(DACK_IO2 == 2) // keyboard
+        if(DACK_IO2 == 1) // keyboard
         {
             state.DMAColor = DMA_COLOR;
             state.DACK_IO_2 = DMA_COLOR;

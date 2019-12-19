@@ -20,6 +20,7 @@
 #include <QToolBar>
 #include <QAction>
 #include <QFont>
+#include <QCoreApplication>
 
 #include "Assembler/simulator.h"
 #include <bits/stdc++.h>

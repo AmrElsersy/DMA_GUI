@@ -122,7 +122,7 @@ void Gui::adjustErrorBox()
 
 void Gui::adjustPlainText()
 {
-    plainText->setStyleSheet("background-color:white; font-size: 15px;");
+    plainText->setStyleSheet("background-color:white; font-size: 15px; color:black;");
 
 }
 
@@ -177,12 +177,13 @@ void Gui::adjustGrid()
 
 void Gui::handleToolBar()
 {
-    QIcon I_MemIO("D:/dmagui/DMA_GUI/icons/printer.png"); QString S_MemIO("Printer");
-    QIcon I_IOMem("D:/dmagui/DMA_GUI/icons/key.png"); QString S_IOMem("Keyboard");
-    QIcon I_Mem_Mem("D:/dmagui/DMA_GUI/icons/ram1.png"); QString S_Mem_Mem("Memory Memory");
-    QIcon I_ProgramDMA("D:/dmagui/DMA_GUI/icons/technics.png"); QString S_ProgramDMA("Program DMA");
-    QIcon I_Simulate("D:/dmagui/DMA_GUI/icons/microchip.png"); QString S_Simulate("Simulate");
-    QIcon I_Open("D:/dmagui/DMA_GUI/icons/folder.png"); QString S_Open("Open");
+    QString path = QCoreApplication::applicationDirPath() + "/../../DMA_GUI/icons/";
+    QIcon I_MemIO(path + "printer.png"); QString S_MemIO("Printer");
+    QIcon I_IOMem(path + "key.png"); QString S_IOMem("Keyboard");
+    QIcon I_Mem_Mem(path + "ram1.png"); QString S_Mem_Mem("Memory Memory");
+    QIcon I_ProgramDMA(path +  "technics.png"); QString S_ProgramDMA("Program DMA");
+    QIcon I_Simulate(path + "microchip.png"); QString S_Simulate("Simulate");
+    QIcon I_Open(path + "folder.png"); QString S_Open("Open");
 
     toolBar->setStyleSheet("QToolBar{ background-color:black; border-radius:10%; color:white; font-size:17px;}"
                            " QToolButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; color:black; "
