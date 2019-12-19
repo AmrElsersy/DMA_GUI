@@ -12,10 +12,15 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
 
     this->index = 0;
     this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA_GUI/feedback.txt").toStdString();
-//    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA/feedback.txt").toStdString();
-
+    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA/feedback.txt").toStdString();
+    // init
     this->initColors();
+    this->initButtons();
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
+    // timer
+    this->timer = new QTimer();
+    this->timer->setInterval(700);
+    connect(this->timer,SIGNAL(timeout()),this,SLOT(continuous_play()));
 
     this->myPainter = new Painter(this);
 }
@@ -40,6 +45,8 @@ void myScene::updateStates(int direction)
         }
         this->index --;
     }
+    this->progressBar->setValue(this->index);
+
 
     this->myPainter->setCPU_Color(this->states[this->index].CPUColor);
     this->myPainter->setDMA_Color(this->states[this->index].DMAColor);
@@ -93,6 +100,8 @@ void myScene::INIT_Scene(vector<string> Code)
     this->initStates();
 
     this->index = 0;
+    this->progressBar->setRange(0,this->max_clocks);
+
 }
 void myScene::initStates()
 {
@@ -106,7 +115,6 @@ void myScene::initStates()
 
         state.PC = PC;
         state.Instruction = Instruction;
-
 
         int DataBusValue    = string_to_int(data[1]);
         int AddressBusValue = string_to_int(data[2]);
@@ -270,11 +278,8 @@ void myScene::initStates()
             state.DACK_IO_2 = DMA_COLOR;
 
             state.IO2Color = IO2_COLOR;
-            if(ControlValue == 1 )
-            {
-                state.DataBusColor = IO2_COLOR;
-                state.RamTextColor = IO2_COLOR;
-            }
+            state.DataBusColor = IO2_COLOR;
+            state.RamTextColor = IO2_COLOR;
         }
         // ============== Z & X ==================
         if (DataBusValue == XX || DataBusValue == ZZ) state.DataBusColor = INITIAL_COLOR;
@@ -385,7 +390,7 @@ void myScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF point = event->scenePos();
     QString s = QString::number(point.x()) + "," + QString :: number(point.y()) ;
     this->cursor->setPlainText(s);
-//    cout << "x=" << point.x() << ",y=" << point.y() << endl;
+    //    cout << "x=" << point.x() << ",y=" << point.y() << endl;
     //    this->myPainter->checkPos(point.x(),point.y());
 
 }
@@ -397,16 +402,16 @@ void myScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
     this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
     cout << point.x() << "," << point.y() << endl ;
 }
-void myScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    QPointF point = event->scenePos();
-    // string the point
-    QString s = QString::number(point.x()) + "," + QString :: number(point.y()) ;
-    this->cursor->setPlainText(s);
-    // print the QGraphicText Item on the Scene
-    //    this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
-    cout << "\"" << point.x() << "," << point.y() << "\" ," ;
-}
+//void myScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    QPointF point = event->scenePos();
+//    // string the point
+//    QString s = QString::number(point.x()) + "," + QString :: number(point.y()) ;
+//    this->cursor->setPlainText(s);
+//    // print the QGraphicText Item on the Scene
+//    //    this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
+//    cout << "\"" << point.x() << "," << point.y() << "\" ," ;
+//}
 //void myScene::drawBackground(QPainter *painter, const QRectF &rect)
 //{
 //    painter->drawImage(QRectF(-900,-400,1600,900),this->image);
@@ -416,6 +421,7 @@ void myScene::initButtons()
     QWidget* buttons_widget = new QWidget();
     QGridLayout* layout = new QGridLayout();
     buttons_widget->setStyleSheet("background-color:#035c70; border-radius:5px;");
+    buttons_widget->setMinimumWidth(300);
 
     this->progressBar = new QProgressBar();
     this->progressBar->setRange(0,100);

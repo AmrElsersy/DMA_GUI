@@ -60,7 +60,7 @@ private:
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+//    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 //    void drawBackground(QPainter *painter, const QRectF &rect) override;
 
