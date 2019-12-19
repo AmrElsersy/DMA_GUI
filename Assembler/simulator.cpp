@@ -60,7 +60,7 @@ void Simulator::ASSEMBLY(vector<string> ray2)
 {
     this->code_from_editor = ray2;
     this->Simulate();
-    emit init_simulation();
+    emit init_simulation(this->code);
 }
 
 void Simulator::Simulate()

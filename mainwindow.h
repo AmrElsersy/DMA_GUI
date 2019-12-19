@@ -30,5 +30,6 @@ public:
 signals:
 
 public slots:
+    void start_simulation(vector<string>);
 };
 #endif // MAINWINDOW_H

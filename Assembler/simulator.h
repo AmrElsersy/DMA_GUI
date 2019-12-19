@@ -111,6 +111,8 @@ signals:
     void updatePipelineAssemblyCode(vector<string>);
     void highlight(uint);
 
+    void init_simulation(vector<string>);
+
 public slots:
     void set_Program_Counter(string label);
     void set_Program_Counter(int adress);

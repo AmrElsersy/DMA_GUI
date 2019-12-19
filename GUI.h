@@ -16,6 +16,10 @@
 #include <QStringList>
 #include <QFile>
 #include <math.h>
+#include <QSize>
+#include <QToolBar>
+#include <QAction>
+#include <QFont>
 
 #include "Assembler/simulator.h"
 #include <bits/stdc++.h>
@@ -24,7 +28,7 @@ using namespace std;
 class Gui : public QWidget
 {
     Q_OBJECT
-
+friend class MainWindow;
 private:
     const long MIN_TRANSFER_LOCATION = 32*6; // 4-IO devices each 32 location + 2*32 location for DMA
     const long MAX_TRANSFER_LOCATION = pow(2,16); // 64K Memory
@@ -40,7 +44,6 @@ private:
     QPushButton *MemtoMem;
     QPushButton *simulate;
     QPushButton *open;
-    QPushButton *save;
     QPushButton *programDMA;
 
 
@@ -68,6 +71,8 @@ private:
 
     QFileDialog *dialogFile;
 
+    QToolBar *toolBar;
+
     // Vector of strings which holds program assembly code
     vector<string> assemblyCode;
 
@@ -78,9 +83,14 @@ public:
     void drawButtons();
     void drawLineEdit();
     void drawPlainText();
+    void adjustButtons();
+    void adjustErrorBox();
+    void adjustPlainText();
+    void adjustLineEdit();
+    void adjustGrid();
+    void handleToolBar();
 
     void connections();
-    QGridLayout* getMainGrid();
 
 
 signals:
@@ -93,7 +103,9 @@ public slots:
     void open_Slot();
     void program_DMA_Slot();
     void file_Is_Selected(const QString);
-    // void save_Slot();
+
+    void tool_Bar_Slot(QAction*);
+
 };
 
 #endif // GUI_H
