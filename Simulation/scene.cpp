@@ -214,6 +214,10 @@ void myScene::initStates()
             state.IO2Color = INITIAL_COLOR;
 
             if(ControlValue == 0) state.DataBusColor = IO1_COLOR;
+            // Text Coloring
+            if(HoldAck == 1) state.PrinterTextColor= RAM_COLOR;
+            else if (DONT_NEED_BUS == 0) state.PrinterTextColor = CPU_COLOR;
+
         }
         else if(AddressBusValue >= IO2_ADDRESS_START && AddressBusValue <= IO2_ADDRESS_END && ( HoldAck == 1 || DONT_NEED_BUS == 0 ))
         {
@@ -222,6 +226,10 @@ void myScene::initStates()
             state.IO2Color = IO2_COLOR;
 
             if(ControlValue == 0) state.DataBusColor = IO2_COLOR;
+            // Text Coloring
+            if(HoldAck == 1) state.KeyboardTextColor = DMA_COLOR;
+            else if (DONT_NEED_BUS == 0) state.KeyboardTextColor = CPU_COLOR;
+
         }
         else if(AddressBusValue >= DMA_ADDRESS_START && AddressBusValue <= DMA_ADDRESS_END && ( HoldAck == 1 || DONT_NEED_BUS == 0 ))
         {
@@ -232,10 +240,6 @@ void myScene::initStates()
 
             if(ControlValue == 0) state.DataBusColor = DMA_COLOR;
         }
-        // ============== Z & X ==================
-        if (DataBusValue == XX || DataBusValue == ZZ) state.DataBusColor = INITIAL_COLOR;
-        if (AddressBusValue == XX || AddressBusValue == ZZ) state.AddressBusColor = INITIAL_COLOR;
-        if (ControlValue == XX || ControlValue == ZZ) state.DataBusColor = INITIAL_COLOR;
         // ============== DREQ & DACK ============
         if(DREQ_IO1 == 1)
         {
@@ -247,17 +251,35 @@ void myScene::initStates()
             state.IO2Color = IO2_COLOR;
             state.DREQ_IO_2 = IO2_COLOR;
         }
-        if(DACK_IO1 == 1)
+        if(DACK_IO1 == 1) // printer
         {
             state.DMAColor = DMA_COLOR;
             state.DACK_IO_1 = DMA_COLOR;
+
+            state.IO1Color = IO1_COLOR;
+            if(ControlValue == 0 )
+            {
+                state.RAMColor = RAM_COLOR;
+                state.DataBusColor = RAM_COLOR;
+                state.PrinterTextColor = RAM_COLOR;
+            }
         }
-        if(DACK_IO2 == 2)
+        if(DACK_IO2 == 2) // keyboard
         {
             state.DMAColor = DMA_COLOR;
             state.DACK_IO_2 = DMA_COLOR;
-        }
 
+            state.IO2Color = IO2_COLOR;
+            if(ControlValue == 1 )
+            {
+                state.DataBusColor = IO2_COLOR;
+                state.RamTextColor = IO2_COLOR;
+            }
+        }
+        // ============== Z & X ==================
+        if (DataBusValue == XX || DataBusValue == ZZ) state.DataBusColor = INITIAL_COLOR;
+        if (AddressBusValue == XX || AddressBusValue == ZZ) state.AddressBusColor = INITIAL_COLOR;
+        if (ControlValue == XX || ControlValue == ZZ) state.DataBusColor = INITIAL_COLOR;
         this->states.push_back(state);
     }
 }

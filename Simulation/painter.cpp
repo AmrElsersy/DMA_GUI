@@ -59,8 +59,8 @@ void Painter::init_BUSs()
     this->Data_Bus["Data_IO1_Down2"] = newPath({ "126,100" ,"290,100" });
 
     // Other Paths
-    this->Paths["DREQ_IO1"] = newPath({"461,45" ,"571,45" ,"571,412" ,"-72,412" });
-    this->Paths["DACK_IO1"] = newPath({"460,67" ,"533,67" ,"533,390" ,"-70,390" });
+    this->Paths["DREQ_IO1"] = newPath({"460,67" ,"533,67" ,"533,390" ,"-70,390" });
+    this->Paths["DACK_IO1"] = newPath({"461,45" ,"571,45" ,"571,412" ,"-72,412" });
     this->Paths["DREQ_IO2"] = newPath({"331,295" ,"331,325" ,"-70,325" });
     this->Paths["DACK_IO2"] = newPath({"373,299" ,"373,348" ,"-70,348" });
     this->Paths["IOR"] = newPath({"-623,3" ,"-623,306" ,"-397,306" });
