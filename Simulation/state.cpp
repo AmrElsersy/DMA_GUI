@@ -24,4 +24,8 @@ State::State()
     this->IO1Color = INITIAL_COLOR;
     this->IO2Color = INITIAL_COLOR;
     this->RAMColor = INITIAL_COLOR;
+
+    this->RamTextColor = Qt::white;
+    this->KeyboardTextColor = Qt::white;
+    this->PrinterTextColor = Qt::white;
 }

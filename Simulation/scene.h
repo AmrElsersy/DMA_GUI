@@ -28,6 +28,7 @@ private:
     QTimer* timer;
     bool play;
     vector<string> code;
+    QProgressBar* progressBar;
 
     // painter for our circut
     Painter* myPainter;
@@ -51,6 +52,7 @@ public:
 
 private:
     void initColors();
+    void initButtons();
     void updateProgressBar();
     vector<string> split_string(string s,string splitter);
     QString parasePC_Text(string pc);

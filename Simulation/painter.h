@@ -78,6 +78,10 @@ public:
     // CPU Data
     void setPC(QString);
     void setInstruction(QString);
+    // Colors for CPU talking
+    void setRAMTextColor(QColor);
+    void setKeyboardTextColor(QColor);
+    void setPrinterTextColor(QColor);
     // ray2
     void checkPos(int x , int y);
 signals:

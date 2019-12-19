@@ -51,6 +51,11 @@ public:
     QColor DACK_IO_1;
     QColor DACK_IO_2;
 
+    QColor RamTextColor;
+    QColor KeyboardTextColor;
+    QColor PrinterTextColor;
+
+
     int PC;
     QString Instruction;
     State();

@@ -1,0 +1,14 @@
+addi $s0,$s0,10
+addi $s1,$s1,20
+addi $s2,$s2,30
+addi $s3,$s3,40
+SW $s0,1
+SW $s1,2
+SW $s2,3
+SW $s3,4
+addi $s0,$s0,3
+LW $t0,1
+LW $t1,2
+LW $t2,3
+LW $t3,4
+

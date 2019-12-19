@@ -1,14 +1,13 @@
 #include "simulator.h"
-
 Simulator::Simulator()
 {
-    this->modelsim_path = QCoreApplication::applicationDirPath() + "/../../DMA/MIPS";
-    this->file_assembly_path = "C:/Users/user/Desktop/DMA/ins.txt";
+    this->modelsim_path = QCoreApplication::applicationDirPath() + "/../../DMA";
+    this->file_assembly_path = (QCoreApplication::applicationDirPath() + "/../../DMA/ins.txt").toStdString();
 
     this->modelsim_process = new QProcess();
     // ==================== Run ModelSim ============================
     this->modelsim_process->setWorkingDirectory(this->modelsim_path);
-    this->modelsim_command = "vsim -c -do \"run -all\" work.tb_MIPS";
+    this->modelsim_command = "vsim -c -do \"run 900 ns\" work.tb_MIPS";
 
     this->Program_Counter = new Register("PC",100,0);
     this->register_file = new Register_File();
@@ -102,9 +101,6 @@ void Simulator::Simulate()
         cout << "error in modelsim" << endl;
         return;
     }
-    emit Output_Print("ModelSim Finished.");
-    //    emit file_assembled_instructions(this->file_assembly_path); // write file with assembledd instructions
-    emit Output_Print("..................");
 }
 void Simulator::debugg_pc()
 {

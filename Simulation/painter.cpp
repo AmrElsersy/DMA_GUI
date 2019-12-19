@@ -214,6 +214,21 @@ void Painter::setInstruction(QString ins)
     this->Text["Instruction"]->setPlainText("Instruction = " + ins);
 }
 
+void Painter::setRAMTextColor(QColor clr)
+{
+    this->Text["RAM"]->setDefaultTextColor(clr);
+}
+
+void Painter::setKeyboardTextColor(QColor clr)
+{
+    this->Text["Keyboard"]->setDefaultTextColor(clr);
+}
+
+void Painter::setPrinterTextColor(QColor clr)
+{
+    this->Text["Printer"]->setDefaultTextColor(clr);
+}
+
 void Painter::checkPos(int x, int y)
 {
     int X = this->CPU->scenePos().toPoint().rx();    int Y = this->CPU->scenePos().ry();
