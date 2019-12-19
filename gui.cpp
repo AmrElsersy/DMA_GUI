@@ -122,7 +122,7 @@ void Gui::adjustErrorBox()
 
 void Gui::adjustPlainText()
 {
-    plainText->setStyleSheet("background-color:rgba(255, 254, 219, 0.849); font-size: 15px;");
+    plainText->setStyleSheet("background-color:white; font-size: 15px;");
 
 }
 
@@ -139,16 +139,16 @@ void Gui::adjustLineEdit()
     maskRegister->setMinimumSize(50,50);
     requestRegister->setMinimumSize(50,50);
 
-    source->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    destination->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    count->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    source->setStyleSheet("border-radius:5%;border-width: 0.5px;color:black; border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    destination->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    count->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
 
-    BWRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    BWCRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    commandRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    modeRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    maskRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
-    requestRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; border-style: solid; border-color: gray ; background-color:rgba(255, 254, 219, 0.849);");
+    BWRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    BWCRegister->setStyleSheet("border-radius:5%;border-width: 0.5px;color:black; border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    commandRegister->setStyleSheet("border-radius:5%;border-width: 0.5px; color:black;border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    modeRegister->setStyleSheet("border-radius:5%;border-width: 0.5px;color:black; border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    maskRegister->setStyleSheet("border-radius:5%;border-width: 0.5px;color:black; border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
+    requestRegister->setStyleSheet("border-radius:5%;border-width: 0.5px;color:black; border-style: solid; border-color: gray ; background-color:rgb(201, 201, 201);");
 }
 
 void Gui::adjustGrid()
@@ -177,15 +177,15 @@ void Gui::adjustGrid()
 
 void Gui::handleToolBar()
 {
-    QIcon I_MemIO("C:/Users/Ayman/Desktop/Icons/floppy-disk.png"); QString S_MemIO("Memory IO");
-    QIcon I_IOMem("C:/Users/Ayman/Desktop/Icons/printer.png"); QString S_IOMem("IO Memory");
-    QIcon I_Mem_Mem("C:/Users/Ayman/Desktop/Icons/ram.png"); QString S_Mem_Mem("Memory Memory");
-    QIcon I_ProgramDMA("C:/Users/Ayman/Desktop/Icons/ButtonIcon.png"); QString S_ProgramDMA("Program DMA");
-    QIcon I_Simulate("C:/Users/Ayman/Desktop/Icons/round-play-button.png"); QString S_Simulate("Simulate");
-    QIcon I_Open("C:/Users/Ayman/Desktop/Icons/open-folder-with-document.png"); QString S_Open("Open");
+    QIcon I_MemIO("D:/dmagui/DMA_GUI/icons/printer.png"); QString S_MemIO("Printer");
+    QIcon I_IOMem("D:/dmagui/DMA_GUI/icons/key.png"); QString S_IOMem("Keyboard");
+    QIcon I_Mem_Mem("D:/dmagui/DMA_GUI/icons/ram1.png"); QString S_Mem_Mem("Memory Memory");
+    QIcon I_ProgramDMA("D:/dmagui/DMA_GUI/icons/technics.png"); QString S_ProgramDMA("Program DMA");
+    QIcon I_Simulate("D:/dmagui/DMA_GUI/icons/microchip.png"); QString S_Simulate("Simulate");
+    QIcon I_Open("D:/dmagui/DMA_GUI/icons/folder.png"); QString S_Open("Open");
 
-    toolBar->setStyleSheet("QToolBar{ background-color:rgba(160, 160, 160, 0.849);border-radius:10%; "
-                           "font-size: 17px;} QToolButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; "
+    toolBar->setStyleSheet("QToolBar{ background-color:black; border-radius:10%; color:white; font-size:17px;}"
+                           " QToolButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; color:black; "
                            "border-color: gray ;}");
 
     toolBar->setIconSize(QSize(70,70));

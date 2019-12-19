@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)    : QMainWindow(parent)
     this->view = new View();
     connect(this->gui->simulator,SIGNAL(init_simulation(vector<string>)),this,SLOT(start_simulation(vector<string>)));
 //    this->start_simulation({});
+    this->setStyleSheet("background-color:black; color:white;");
 }
 
 void MainWindow::start_simulation(vector<string> code)
