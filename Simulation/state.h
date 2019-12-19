@@ -1,7 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
-#define INITIAL_COLOR QColor(70,70,70)
+#define INITIAL_COLOR QColor(25,25,25)
 
 #include <QWidget>
 #include <QObject>
@@ -29,7 +29,14 @@
 class State
 {
 public:
-    QColor MasterColor;
+    QColor CPUColor;
+    QColor DMAColor;
+    QColor RAMColor;
+    QColor IO1Color;
+    QColor IO2Color;
+
+    QColor AddressBusColor;
+    QColor ControlBusColor;
     QColor DataBusColor;
 
     QString ControlValue;

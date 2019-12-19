@@ -89,25 +89,21 @@ void Painter::init_Text()
     this->Text["HOLD_ACK"] = newText(-510,370,"HLDA",true);
     this->Text["IOW"] = newText(-590,280,"IOW",true);
     this->Text["IOR"] = newText(-590,320,"IOR",true);
+
+    // ============ Values ==================
+    this->Text["Address"]  = newText(700,400,"Address=",true);
+    this->Text["Data"]  = newText(700,450,"Data=",true);
+    this->Text["Control"] = newText(700,500,"Control=",true);
 }
 Painter::Painter(QObject *parent) : QObject(parent)
 {
     this->color = QColor(Qt::black);
-    this->pen = QPen(QBrush(INITIAL_PATH_COLOR,Qt::SolidPattern),5);
+    this->pen = QPen(QBrush(INITIAL_COLOR,Qt::SolidPattern),5);
     connect(this,SIGNAL(addnewItem(QGraphicsItem*)),parent,SLOT(addNewItem(QGraphicsItem*)));
 
     init_Modules();
     init_BUSs();
     init_Text();
-
-    this->setCPU_Color(Qt::yellow);
-
-}
-
-void Painter::setMasterColor(QColor clr)
-{
-    this->setAddressBusColor(clr);
-    this->setControlBusColor(clr);
 }
 void Painter::setDataBusColor(QColor clr)
 {
@@ -151,37 +147,60 @@ void Painter::setDACK_IO2_Color(QColor clr)
 }
 void Painter::setCPU_Color(QColor clr)
 {
-    this->pen = QPen(clr);
+    this->pen.setColor(clr);
     this->CPU->setPen(this->pen);
 }
-
 void Painter::setDMA_Color(QColor clr)
 {
-    this->pen = QPen(clr);
+    this->pen.setColor(clr);
     this->DMA->setPen(this->pen);
 }
 
 void Painter::setRAM_Color(QColor clr)
 {
-    this->pen = QPen(clr);
+    this->pen.setColor(clr);
     this->RAM->setPen(this->pen);
 }
 
 void Painter::setIO1_Color(QColor clr)
 {
-    this->pen = QPen(clr);
+    this->pen.setColor(clr);
     this->IO_1->setPen(this->pen);
 }
 
 void Painter::setIO2_Color(QColor clr)
 {
-    this->pen = QPen(clr);
+    this->pen.setColor(clr);
     this->IO_2->setPen(this->pen);
+}
+
+void Painter::setControlValue(QString value)
+{
+    this->Text["Control"]->setPlainText("Control=" + value);
+}
+
+void Painter::setDataBusValue(QString value)
+{
+    this->Text["Data"]->setPlainText("Data=" + value);
+}
+
+void Painter::setAddressBusValue(QString value)
+{
+    this->Text["Address"]->setPlainText("Address=" + value);
+}
+
+void Painter::checkPos(int x, int y)
+{
+    int X = this->CPU->scenePos().toPoint().rx();    int Y = this->CPU->scenePos().ry();
+    int w = this->CPU->rect().width();  int h = this->CPU->rect().height();
+    cout << "Pos=" << X << "," << Y << endl;
+    if (x>=X && y >= Y && x <= X+w && y <= Y+h)
+        this->CPU->setBrush(QBrush(Qt::white));
 }
 Path *Painter::newPath(vector<string> points)
 {
     Path* temp = new Path(points);
-    temp->setColor(QColor(INITIAL_PATH_COLOR));
+    temp->setColor(QColor(INITIAL_COLOR));
     emit addnewItem(temp);
     return temp;
 }
@@ -195,4 +214,5 @@ QGraphicsTextItem* Painter::newText(int x , int y, QString Text,bool small_text 
         temp->setFont(QFont("Arial",FONT_SIZE,QFont::Bold));
     temp->setDefaultTextColor(TEXT_COLOR);
     emit addnewItem(temp);
+    return temp;
 }

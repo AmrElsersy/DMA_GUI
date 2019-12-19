@@ -2,7 +2,7 @@
 #define PAINTER_H
 
 #define OFF_COLOR QColor(70,70,70)
-#define CPU_COLOR QColor("#BDB76B")
+#define CPU_COLOR QColor(Qt::blue)
 #define DMA_COLOR QColor(Qt::darkCyan)
 #define RAM_COLOR QColor(Qt::darkRed)
 #define IO1_COLOR QColor("#808000")
@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QWidget>
 #include "path.h"
+#include "state.h"
 #include <QGraphicsRectItem>
 #include <QGraphicsItem>
 #include <QGraphicsPathItem>
@@ -54,7 +55,6 @@ private:
 public:
     Painter(QObject *parent);
     // BUS
-    void setMasterColor(QColor);
     void setDataBusColor(QColor);
     void setAddressBusColor(QColor);
     void setControlBusColor(QColor);
@@ -71,6 +71,12 @@ public:
     void setRAM_Color(QColor);
     void setIO1_Color(QColor);
     void setIO2_Color(QColor);
+    // Values
+    void setControlValue(QString);
+    void setDataBusValue(QString);
+    void setAddressBusValue(QString);
+    // ray2
+    void checkPos(int x , int y);
 signals:
     void addnewItem(QGraphicsItem*);
 

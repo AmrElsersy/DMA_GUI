@@ -11,16 +11,19 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
     this->image = QImage(image_path);
 
     this->index = 0;
+    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA/feedback.txt").toStdString();
+
     this->initColors();
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
-    this->DMA_Painter = new Painter(this);
-
+    this->myPainter = new Painter(this);
+    this->myPainter->setCPU_Color(CPU_COLOR);
+    this->myPainter->setRAM_Color(RAM_COLOR);
+    this->myPainter->setDataBusColor(RAM_COLOR);
+    this->myPainter->setAddressBusColor(CPU_COLOR);
+    this->myPainter->setDataBusValue("50");
+    this->myPainter->setAddressBusValue("400");
 }
-//void myScene::drawBackground(QPainter *painter, const QRectF &rect)
-//{
-//    painter->drawImage(QRectF(-900,-400,1600,900),this->image);
-//}
 void myScene::updateStates(int direction)
 {
 
@@ -43,13 +46,28 @@ void myScene::updateStates(int direction)
         this->index --;
     }
 
-    /*
-     * iterate at every state element
-     * code kteeeeeeeeeeeeeeeer
-     */
+    this->myPainter->setCPU_Color(this->states[this->index].CPUColor);
+    this->myPainter->setDMA_Color(this->states[this->index].DMAColor);
+    this->myPainter->setIO1_Color(this->states[this->index].IO1Color);
+    this->myPainter->setIO2_Color(this->states[this->index].IO2Color);
+    this->myPainter->setRAM_Color(this->states[this->index].RAMColor);
 
+    this->myPainter->setDataBusColor(this->states[this->index].DataBusColor);
+    this->myPainter->setAddressBusColor(this->states[this->index].AddressBusColor);
+    this->myPainter->setControlBusColor(this->states[this->index].ControlBusColor);
 
-    this->progressBar->setValue(this->index);
+    this->myPainter->setHOLD_Color(this->states[this->index].Hold);
+    this->myPainter->setHOLD_ACK_Color(this->states[this->index].HoldAck);
+
+    this->myPainter->setDREQ_IO1_Color(this->states[this->index].DREQ_IO_1);
+    this->myPainter->setDREQ_IO2_Color(this->states[this->index].DREQ_IO_2);
+    this->myPainter->setDACK_IO1_Color(this->states[this->index].DACK_IO_1);
+    this->myPainter->setDACK_IO2_Color(this->states[this->index].DACK_IO_2);
+
+    this->myPainter->setDataBusValue(this->states[this->index].DataBusValue);
+    this->myPainter->setAddressBusValue(this->states[this->index].AddressBusValue);
+    this->myPainter->setControlValue(this->states[this->index].ControlValue);
+
 }
 void myScene::addNewItem(QGraphicsItem * item)
 {
@@ -73,67 +91,115 @@ void myScene::INIT_Scene(vector<string> Code)
     this->initStates();
 
     this->index = 0;
-    this->progressBar->setRange(0,this->max_clocks-2);
 }
-
-
 void myScene::initStates()
 {
     for (uint i = 0 ; i < this->clocks_verilog.size() ; i++)
     {
         State state ;
-        vector<string> data = split_string(clocks_verilog[i]," ");
-        int PC  = stoi(data[0]);
-        QString Instruction = QString::fromStdString(data[1]);
-        int ControlValue = stoi(data[2]);
-        int AddressBusValue =stoi(data[3]);
-        int DataBusValue =stoi(data[4]);
-        int Hold = stoi(data[5]);
-        int HoldAck = stoi(data[6]);
+        vector<string> data = split_string(clocks_verilog[i],",");
 
-        state.ControlValue = QString::fromStdString(to_string(ControlValue));
+        int PC  = string_to_int(data[0]);
+//        QString Instruction = QString::fromStdString(this->code[PC]);
+
+        int DataBusValue    = string_to_int(data[1]);
+        int AddressBusValue = string_to_int(data[2]);
+        int ControlValue    = string_to_int(data[3]);
+
+        int Hold     = string_to_int(data[4]);
+        int HoldAck  = string_to_int(data[5]);
+        int DREQ_IO1 = string_to_int(data[6]);
+        int DACK_IO1 = string_to_int(data[7]);
+        int DREQ_IO2 = string_to_int(data[8]);
+        int DACK_IO2 = string_to_int(data[9]);
+        int DONT_NEED_BUS = string_to_int(data[10]);
+
+        state.ControlValue    = QString::fromStdString(to_string(ControlValue));
         state.AddressBusValue = QString::fromStdString(to_string(AddressBusValue));
-        state.DataBusValue = QString::fromStdString(to_string(DataBusValue));
+        state.DataBusValue    = QString::fromStdString(to_string(DataBusValue));
 
-        if(HoldAck) // DMA
+        if(HoldAck == 1) // DMA
         {
-            state.MasterColor = DMA_COLOR;
+            state.DMAColor = DMA_COLOR;
+            state.CPUColor = CPU_COLOR;
+
+            state.AddressBusColor = DMA_COLOR;
             state.Hold = DMA_COLOR;
             state.HoldAck = CPU_COLOR;
         }
-        else if (!HoldAck)
+        else if (!HoldAck) // CPU
         {
-            state.MasterColor = CPU_COLOR;
-            if(Hold)
+            // CPU NEEDS BUS and Uses it
+            state.CPUColor = CPU_COLOR;
+            if(!DONT_NEED_BUS)
             {
-                state.Hold = DMA_COLOR;
-                state.HoldAck = INITIAL_COLOR;
+                state.AddressBusColor = CPU_COLOR;
+                if(Hold == 1) // CPU && DMA Waiting
+                {
+                    state.DMAColor = DMA_COLOR;
+                    state.Hold = DMA_COLOR;
+                    state.HoldAck = INITIAL_COLOR;
+                }
+                else if (!Hold) // CPU && DMA is not Waiting
+                {
+                    state.Hold = INITIAL_COLOR;
+                    state.HoldAck = INITIAL_COLOR;
+                }
             }
+
+            else if (DONT_NEED_BUS==1) // No one Uses the BUS
+            {
+                // state constructor assign everything to INITIAL_COLOR
+                state.CPUColor = CPU_COLOR;
+            }
+        }
+
+        if (ControlValue == 0 )
+        {
+            state.ControlBusColor = INITIAL_COLOR;
+        }
+        else if (ControlValue ==1 )
+        {
+            if (HoldAck == 1)
+                state.DataBusColor = DMA_COLOR;
+            else if (HoldAck == 0 && !DONT_NEED_BUS)
+                state.DataBusColor = CPU_COLOR;
             else
-            {
-                state.Hold = INITIAL_COLOR;
-                state.HoldAck = INITIAL_COLOR;
-            }
+                state.DataBusColor = INITIAL_COLOR;
         }
+        if     (AddressBusValue >= RAM_ADDRESS_START && AddressBusValue <= RAM_ADDRESS_END && ( HoldAck || !DONT_NEED_BUS ))
+        {
+            state.RAMColor  = RAM_COLOR;
+            state.IO1Color = INITIAL_COLOR;
+            state.IO2Color = INITIAL_COLOR;
 
+            if(ControlValue == 0) state.DataBusColor = RAM_COLOR;
+        }
+        else if(AddressBusValue >= IO1_ADDRESS_START && AddressBusValue <= IO1_ADDRESS_END && ( HoldAck || !DONT_NEED_BUS ))
+        {
+            state.RAMColor = INITIAL_COLOR;
+            state.IO1Color = IO1_COLOR;
+            state.IO2Color = INITIAL_COLOR;
 
-        if(AddressBusValue >= RAM_ADDRESS_START && AddressBusValue <= RAM_ADDRESS_END)
-        {
-            state.DataBusColor = RAM_COLOR;
+            if(ControlValue == 0) state.DataBusColor = IO1_COLOR;
         }
-        else if(AddressBusValue >= IO1_ADDRESS_START && AddressBusValue <= IO1_ADDRESS_END)
+        else if(AddressBusValue >= IO2_ADDRESS_START && AddressBusValue <= IO2_ADDRESS_END && ( HoldAck || !DONT_NEED_BUS ))
         {
-            state.DataBusColor = IO1_COLOR;
-        }
-        else if(AddressBusValue >= IO2_ADDRESS_START && AddressBusValue <= IO2_ADDRESS_END)
-        {
-            state.DataBusColor = IO2_COLOR;
-        }
-        else if(AddressBusValue >= DMA_ADDRESS_START && AddressBusValue <= DMA_ADDRESS_END)
-        {
-            state.DataBusColor = DMA_COLOR;
-        }
+            state.RAMColor = INITIAL_COLOR;
+            state.IO1Color = INITIAL_COLOR;
+            state.IO2Color = IO2_COLOR;
 
+            if(ControlValue == 0) state.DataBusColor = IO2_COLOR;
+        }
+        else if(AddressBusValue >= DMA_ADDRESS_START && AddressBusValue <= DMA_ADDRESS_END && ( HoldAck || !DONT_NEED_BUS ))
+        {
+            state.RAMColor = INITIAL_COLOR;
+            state.IO1Color = INITIAL_COLOR;
+            state.IO2Color = INITIAL_COLOR;
+            state.DMAColor = DMA_COLOR;
+
+            if(ControlValue == 0) state.DataBusColor = DMA_COLOR;
+        }
 
         this->states.push_back(state);
     }
@@ -169,6 +235,7 @@ void myScene::continuous_play()
 void myScene::ReadClocks()
 {
     this->verilog_file.open(this->verilogPath);
+    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
     string s;
     while (getline(this->verilog_file,s))
     {
@@ -189,7 +256,6 @@ void myScene::initColors()
     State ray2;
     this->states.push_back(ray2);
 }
-
 void myScene::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space)
@@ -210,15 +276,28 @@ vector<string> myScene :: split_string(string s,string splitter)
     }
 
     return splitted;}
+
+int myScene::string_to_int(string str)
+{
+    if (str == "X" || str == "x")
+        return XX;
+    else if (str == "Z")
+        return ZZ;
+    try {
+        return stoi(str);
+    } catch (...) {
+        cout << "xxxx string_to_int not ray2" << endl;
+        return XX;
+    }
+}
 void myScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF point = event->scenePos();
-    // string the point
     QString s = QString::number(point.x()) + "," + QString :: number(point.y()) ;
     this->cursor->setPlainText(s);
-    // print the QGraphicText Item on the Scene
-    //    this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
-    //    cout << "Scene(" << point.x() << "," << point.y() << ")" << endl;
+    cout << "x=" << point.x() << ",y=" << point.y() << endl;
+    //    this->myPainter->checkPos(point.x(),point.y());
+
 }
 void myScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
@@ -238,43 +317,7 @@ void myScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     //    this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
     cout << "\"" << point.x() << "," << point.y() << "\" ," ;
 }
-void myScene::initButtons()
-{
-    QWidget* buttons_widget = new QWidget();
-    QGridLayout* layout = new QGridLayout();
-    buttons_widget->setStyleSheet("background-color:#035c70; border-radius:5px;");
-
-    this->progressBar = new QProgressBar();
-    this->progressBar->setRange(0,100);
-    this->progressBar->setStyleSheet("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;background-color:rgb(15,15,15); margin-bottom:5px;}"
-                                     "QProgressBar::chunk{background-color:#fff;};");//#55cc00
-    this->progressBar->setValue(0);
-    QPushButton* right_btn = new QPushButton("");
-    QPushButton* left_btn = new QPushButton("");
-    QPushButton* play_btn = new QPushButton("");
-
-
-    right_btn->setIcon(QIcon(QCoreApplication::applicationDirPath() +"/../../MIPS_Simulator/icons\\right.png"));
-    left_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../MIPS_Simulator/icons\\left.png"));
-    play_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../MIPS_Simulator/icons\\play.png"));
-
-    right_btn->setStyleSheet("border:0; background:#01333e; padding: 5px;");
-    left_btn->setStyleSheet("border:0; background:#01333e; padding: 5px;");
-    play_btn->setStyleSheet("border:0; background:#01333e; padding: 5px;");
-
-    right_btn->setIconSize(QSize(30,30));
-    left_btn->setIconSize(QSize(30,30));
-    play_btn->setIconSize(QSize(30,30));
-
-    connect(right_btn,SIGNAL(pressed()),this,SLOT(rightButton()));
-    connect(left_btn,SIGNAL(pressed()),this,SLOT(leftButton()));
-    connect(play_btn,SIGNAL(pressed()),this,SLOT(playButton()));
-
-    layout->addWidget(this->progressBar,0,0,1,-1);
-    layout->addWidget(left_btn,1,0);
-    layout->addWidget(play_btn,1,1);
-    layout->addWidget(right_btn,1,2);
-
-    buttons_widget->setLayout(layout);
-    this->addWidget(buttons_widget)->setPos(-920,420);
-}
+//void myScene::drawBackground(QPainter *painter, const QRectF &rect)
+//{
+//    painter->drawImage(QRectF(-900,-400,1600,900),this->image);
+//}

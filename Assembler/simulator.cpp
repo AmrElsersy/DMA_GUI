@@ -2,7 +2,7 @@
 
 Simulator::Simulator()
 {
-    this->modelsim_path = QCoreApplication::applicationDirPath() + "/../../MIPS_Simulator/MIPS";
+    this->modelsim_path = QCoreApplication::applicationDirPath() + "/../../DMA/MIPS";
     this->file_assembly_path = "C:/Users/user/Desktop/DMA/ins.txt";
 
     this->modelsim_process = new QProcess();
@@ -60,6 +60,7 @@ void Simulator::ASSEMBLY(vector<string> ray2)
 {
     this->code_from_editor = ray2;
     this->Simulate();
+    emit init_simulation();
 }
 
 void Simulator::Simulate()
@@ -70,7 +71,8 @@ void Simulator::Simulate()
         emit Output_Print("Reading Editor is Done");
         cout << "Reading Editor done" << endl;
 
-    } catch (...) {
+    }
+    catch (...) {
         emit Output_Print("Error Reading Editor");
         cout << "Error Reading Editor" << endl;
         return;
@@ -94,8 +96,10 @@ void Simulator::Simulate()
     emit Output_Print("Running ModelSim ...");
     try {
         this->Modelsim();
+        cout << "Modelsim execution" << endl;
     } catch (...) {
         emit Output_Print("Error in ModelSim");
+        cout << "error in modelsim" << endl;
         return;
     }
     emit Output_Print("ModelSim Finished.");

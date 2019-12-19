@@ -4,7 +4,6 @@
 #define TEXT_COLOR Qt::white
 #define SMALL_FONT_SIZE 10
 #define FONT_SIZE 14
-#define INITIAL_PATH_COLOR QColor(Qt::gray)
 
 #include <QPointF>
 #include <QPoint>
@@ -18,6 +17,7 @@
 #include <QGraphicsTextItem>
 #include <iostream>
 #include <stdarg.h>
+#include "state.h"
 using namespace std;
 
 class Path :  public QObject, public QGraphicsPathItem

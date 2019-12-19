@@ -2,7 +2,8 @@
 #define SCENE_H
 
 #define MAX_TOP_LEFT_CORNER -984,-446
-
+#define XX -1
+#define ZZ -2
 
 #include <QCoreApplication>
 
@@ -29,7 +30,7 @@ private:
     vector<string> code;
 
     // painter for our circut
-    Painter* DMA_Painter;
+    Painter* myPainter;
     // states
     uint index;
     vector<State> states;
@@ -41,20 +42,19 @@ private:
     // ray2
     QImage image;
     QIcon icon;
-    QProgressBar* progressBar;
 
 public:
     explicit myScene(QWidget *parent = nullptr);
-    void updateProgressBar();
+    void ReadClocks();
+    void initStates();
     void updateStates(int);
 
 private:
     void initColors();
-    void initStates();
-    void initButtons();
-    void ReadClocks();
+    void updateProgressBar();
     vector<string> split_string(string s,string splitter);
     QString parasePC_Text(string pc);
+    int string_to_int(string);
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);

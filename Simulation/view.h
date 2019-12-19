@@ -12,6 +12,7 @@
 using namespace  std;
 class View :public QGraphicsView
 {
+friend class MainWindow;
     Q_OBJECT
 public:
     myScene *      my_scene;
