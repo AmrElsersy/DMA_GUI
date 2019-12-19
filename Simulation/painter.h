@@ -75,6 +75,9 @@ public:
     void setControlValue(QString);
     void setDataBusValue(QString);
     void setAddressBusValue(QString);
+    // CPU Data
+    void setPC(QString);
+    void setInstruction(QString);
     // ray2
     void checkPos(int x , int y);
 signals:

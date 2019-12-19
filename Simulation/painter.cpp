@@ -77,9 +77,9 @@ void Painter::init_Text()
     this->Text["Printer"] = newText(320,25,"Printer");
     this->Text["RAM"] = newText(345,-208,"RAM");
     // ========== BUS ======================
-    this->Text["Data_Bus"] = newText(-570,-335,"Data Bus",true);
-    this->Text["Address_Bus"] = newText(-520,-253,"Address Bus",true);
-    this->Text["Control"] = newText(-450,-170,"MEMR/W",true);
+    this->Text["Data_Bus"] = newText(-570,-335,"Data Bus = Z",true);
+    this->Text["Address_Bus"] = newText(-520,-253,"Address Bus = Z",true);
+    this->Text["Control"] = newText(-450,-170,"MEMR/W = Z",true);
     // ========== Paths ====================
     this->Text["DREQ_IO2"] = newText(-35,300,"DREQ",true);
     this->Text["DACK_IO2"] = newText(-35,325,"DACK",true);
@@ -90,10 +90,10 @@ void Painter::init_Text()
     this->Text["IOW"] = newText(-590,280,"IOW",true);
     this->Text["IOR"] = newText(-590,320,"IOR",true);
 
-    // ============ Values ==================
-    this->Text["Address"]  = newText(700,400,"Address=",true);
-    this->Text["Data"]  = newText(700,450,"Data=",true);
-    this->Text["Control"] = newText(700,500,"Control=",true);
+    // ============ PC && Instruction ==================
+    this->Text["PC"] = newText(-770,-390,"PC = ",true);
+    this->Text["Instruction"] = newText(-770,-370,"Instruction = ",true);
+
 }
 Painter::Painter(QObject *parent) : QObject(parent)
 {
@@ -176,17 +176,42 @@ void Painter::setIO2_Color(QColor clr)
 
 void Painter::setControlValue(QString value)
 {
-    this->Text["Control"]->setPlainText("Control=" + value);
+    if(value == "-1")
+        this->Text["Control"]->setPlainText("MEMR/W = x");
+    else if (value == "-2")
+        this->Text["Control"]->setPlainText("MEMR/W = z");
+    else
+        this->Text["Control"]->setPlainText("MEMR/W = " + value);
 }
 
 void Painter::setDataBusValue(QString value)
 {
-    this->Text["Data"]->setPlainText("Data=" + value);
+    if(value == "-1")
+        this->Text["Data_Bus"]->setPlainText("Data Bus = x");
+    else if (value == "-2")
+        this->Text["Data_Bus"]->setPlainText("Data Bus = z");
+    else
+        this->Text["Data_Bus"]->setPlainText("Data Bus = " + value);
 }
 
 void Painter::setAddressBusValue(QString value)
 {
-    this->Text["Address"]->setPlainText("Address=" + value);
+    if(value == "-1")
+        this->Text["Address_Bus"]->setPlainText("Address Bus = x");
+    else if (value == "-2")
+        this->Text["Address_Bus"]->setPlainText("Address Bus = z");
+    else
+        this->Text["Address_Bus"]->setPlainText("Address Bus = " + value);
+}
+
+void Painter::setPC(QString pc)
+{
+    this->Text["PC"]->setPlainText("PC = " + pc);
+}
+
+void Painter::setInstruction(QString ins)
+{
+    this->Text["Instruction"]->setPlainText("Instruction = " + ins);
 }
 
 void Painter::checkPos(int x, int y)

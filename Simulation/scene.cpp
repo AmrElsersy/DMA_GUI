@@ -11,18 +11,12 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
     this->image = QImage(image_path);
 
     this->index = 0;
-    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA/feedback.txt").toStdString();
+    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA_GUI/feedback.txt").toStdString();
 
     this->initColors();
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
     this->myPainter = new Painter(this);
-    this->myPainter->setCPU_Color(CPU_COLOR);
-    this->myPainter->setRAM_Color(RAM_COLOR);
-    this->myPainter->setDataBusColor(RAM_COLOR);
-    this->myPainter->setAddressBusColor(CPU_COLOR);
-    this->myPainter->setDataBusValue("50");
-    this->myPainter->setAddressBusValue("400");
 }
 void myScene::updateStates(int direction)
 {
@@ -68,6 +62,9 @@ void myScene::updateStates(int direction)
     this->myPainter->setAddressBusValue(this->states[this->index].AddressBusValue);
     this->myPainter->setControlValue(this->states[this->index].ControlValue);
 
+    this->myPainter->setPC(QString::number(this->states[this->index].PC));
+    this->myPainter->setInstruction(this->states[this->index].Instruction);
+
 }
 void myScene::addNewItem(QGraphicsItem * item)
 {
@@ -87,7 +84,7 @@ void myScene::INIT_Scene(vector<string> Code)
     this->code.push_back("xxxx");
 
     // read clocks description
-    this->ReadClocks(); // read pc.txt
+    this->ReadClocks(); // read feedback.txt
     this->initStates();
 
     this->index = 0;
@@ -102,17 +99,21 @@ void myScene::initStates()
         int PC  = string_to_int(data[0]);
 //        QString Instruction = QString::fromStdString(this->code[PC]);
 
+        state.PC = PC;
+        state.Instruction = "ray2";
+
+
         int DataBusValue    = string_to_int(data[1]);
         int AddressBusValue = string_to_int(data[2]);
         int ControlValue    = string_to_int(data[3]);
 
         int Hold     = string_to_int(data[4]);
         int HoldAck  = string_to_int(data[5]);
-        int DREQ_IO1 = string_to_int(data[6]);
-        int DACK_IO1 = string_to_int(data[7]);
-        int DREQ_IO2 = string_to_int(data[8]);
-        int DACK_IO2 = string_to_int(data[9]);
-        int DONT_NEED_BUS = string_to_int(data[10]);
+        int DONT_NEED_BUS = string_to_int(data[6]);
+        int DREQ_IO1 = string_to_int(data[7]);
+        int DACK_IO1 = string_to_int(data[8]);
+        int DREQ_IO2 = string_to_int(data[9]);
+        int DACK_IO2 = string_to_int(data[10]);
 
         state.ControlValue    = QString::fromStdString(to_string(ControlValue));
         state.AddressBusValue = QString::fromStdString(to_string(AddressBusValue));
@@ -161,12 +162,22 @@ void myScene::initStates()
         else if (ControlValue ==1 )
         {
             if (HoldAck == 1)
+            {
                 state.DataBusColor = DMA_COLOR;
+                state.ControlBusColor = DMA_COLOR;
+            }
             else if (HoldAck == 0 && !DONT_NEED_BUS)
+            {
                 state.DataBusColor = CPU_COLOR;
+                state.ControlBusColor = CPU_COLOR;
+            }
             else
+            {
                 state.DataBusColor = INITIAL_COLOR;
+            }
+
         }
+
         if     (AddressBusValue >= RAM_ADDRESS_START && AddressBusValue <= RAM_ADDRESS_END && ( HoldAck || !DONT_NEED_BUS ))
         {
             state.RAMColor  = RAM_COLOR;
@@ -244,9 +255,11 @@ void myScene::ReadClocks()
         this->clocks_verilog.push_back(s);
     }
 
+    cout << "feedback.txt data:" << endl;
     for (uint i =0 ; i< this->clocks_verilog.size() ; i++ )
         cout << this->clocks_verilog[i] << "   " ;
     cout << endl;
+
     this->max_clocks = this->clocks_verilog.size();
     cout << "maxclocks = " << this->max_clocks << endl;
     this->verilog_file.close();
@@ -281,7 +294,7 @@ int myScene::string_to_int(string str)
 {
     if (str == "X" || str == "x")
         return XX;
-    else if (str == "Z")
+    else if (str == "Z" || str == "z")
         return ZZ;
     try {
         return stoi(str);
@@ -295,7 +308,7 @@ void myScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF point = event->scenePos();
     QString s = QString::number(point.x()) + "," + QString :: number(point.y()) ;
     this->cursor->setPlainText(s);
-    cout << "x=" << point.x() << ",y=" << point.y() << endl;
+//    cout << "x=" << point.x() << ",y=" << point.y() << endl;
     //    this->myPainter->checkPos(point.x(),point.y());
 
 }
