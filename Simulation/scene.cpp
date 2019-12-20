@@ -43,7 +43,6 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
 }
 void myScene::updateStates(int direction)
 {
-
     if(direction == 1) // right
     {
         if (this->index == this->max_clocks ) // if index is the last index in clocks vector
@@ -65,12 +64,17 @@ void myScene::updateStates(int direction)
     if (this->index <= this->progressBar->maximum())
         this->progressBar->setValue(this->index);
 
-//    if(this->index < this->clocks_ram.size())
-//    {
-//        vector<string> ram_values = split_string(this->clocks_ram[this->index],",");
-//        ram_values.erase(ram_values.end());
-//        this->RAM_Widget->update(ram_values);
-//    }
+    if(this->index < this->clocks_ram.size() && this->index < this->clocks_verilog.size() )
+    {
+        cout << "index = " << this->index <<", clocks_ram" << this->clocks_ram.size() << ", clocks_all" << this->clocks_verilog.size()<< endl;
+        try {
+            vector<string> ram_values = split_string(this->clocks_ram[this->index],",");
+            ram_values.erase(ram_values.end());
+            this->RAM_Widget->update(ram_values);
+        } catch (...) {
+            cout << "=========== Exection not ray2 =========== in ram widget" << endl;
+         }
+    }
 
     this->myPainter->setCPU_Color(this->states[this->index].CPUColor);
     this->myPainter->setDMA_Color(this->states[this->index].DMAColor);
@@ -100,8 +104,6 @@ void myScene::updateStates(int direction)
 
     this->myPainter->setPC(QString::number(this->states[this->index].PC));
     this->myPainter->setInstruction(this->states[this->index].Instruction);
-    cout << "index=" << this->index<< endl;
-
 }
 void myScene::addNewItem(QGraphicsItem * item)
 {
@@ -519,10 +521,9 @@ void myScene::initButtons()
     QPushButton* left_btn = new QPushButton("");
     QPushButton* play_btn = new QPushButton("");
 
-
-    right_btn->setIcon(QIcon(QCoreApplication::applicationDirPath() +"/../../MIPS_Simulator/icons\\right.png"));
-    left_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../MIPS_Simulator/icons\\left.png"));
-    play_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../MIPS_Simulator/icons\\play.png"));
+    right_btn->setIcon(QIcon(QCoreApplication::applicationDirPath() +"/../../DMA_GUI/icons/right.png"));
+    left_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../DMA_GUI/icons/left.png"));
+    play_btn->setIcon(QIcon(QCoreApplication::applicationDirPath()  +"/../../DMA_GUI/icons/play.png"));
 
     right_btn->setStyleSheet("border:0; background:#01333e; padding: 5px;");
     left_btn->setStyleSheet("border:0; background:#01333e; padding: 5px;");
