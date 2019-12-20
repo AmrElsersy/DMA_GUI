@@ -11,16 +11,33 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
     this->image = QImage(image_path);
 
     this->index = 0;
-    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA_GUI/feedback.txt").toStdString();
+//    this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA_GUI/feedback.txt").toStdString();
     this->verilogPath = (QCoreApplication::applicationDirPath() + "/../../DMA/feedback.txt").toStdString();
+    this->ramPath = (QCoreApplication::applicationDirPath() + "/../../DMA/ram.txt").toStdString();
+    this->IO1Path = (QCoreApplication::applicationDirPath() + "/../../DMA/io1.txt").toStdString();
+    this->IO2Path = (QCoreApplication::applicationDirPath() + "/../../DMA/io2.txt").toStdString();
+    this->DMAPath = (QCoreApplication::applicationDirPath() + "/../../DMA/dma.txt").toStdString();
+
     // init
     this->initColors();
     this->initButtons();
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
     // timer
     this->timer = new QTimer();
-    this->timer->setInterval(700);
+    this->timer->setInterval(900);
     connect(this->timer,SIGNAL(timeout()),this,SLOT(continuous_play()));
+    // widgets
+    this->DMA_Widget = new Tree_Widget("DMA");
+    this->RAM_Widget = new Tree_Widget("Memory");
+    this->IO1_Widget = new Tree_Widget("Memory");
+    this->IO2_Widget = new Tree_Widget("Memory");
+
+    this->DMA_Widget->setStyleSheet("background-color:black;");
+    this->RAM_Widget->setStyleSheet("background-color:black;");
+    this->DMA_Widget->setMinimumWidth(85);
+    this->DMA_Widget->setMinimumHeight(330);
+    this->RAM_Widget->setMinimumWidth(95);
+    this->RAM_Widget->setMinimumHeight(500);
 
     this->myPainter = new Painter(this);
 }
@@ -46,7 +63,12 @@ void myScene::updateStates(int direction)
         this->index --;
     }
     this->progressBar->setValue(this->index);
-
+    if(this->index < this->clocks_ram.size())
+    {
+        vector<string> ram_values = split_string(this->clocks_ram[this->index],",");
+        ram_values.erase(ram_values.end());
+        this->RAM_Widget->update(ram_values);
+    }
 
     this->myPainter->setCPU_Color(this->states[this->index].CPUColor);
     this->myPainter->setDMA_Color(this->states[this->index].DMAColor);
@@ -97,8 +119,12 @@ void myScene::INIT_Scene(vector<string> Code)
 
     // read clocks description
     this->ReadClocks(); // read feedback.txt
-    this->initStates();
+    this->ReadRamClocks(); // read ram.txt
+//    this->ReadDMAClocks();
+//    this->ReadIO1Clocks();
+//    this->ReadIO2Clocks();
 
+    this->initStates();
     this->index = 0;
     this->progressBar->setRange(0,this->max_clocks);
 
@@ -320,7 +346,7 @@ void myScene::ReadClocks()
 {
     this->clocks_verilog.clear();
     this->verilog_file.open(this->verilogPath);
-    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
+    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; } else cout << "file opened successfully" << endl;
     string s;
     while (getline(this->verilog_file,s))
     {
@@ -345,6 +371,59 @@ void myScene::ReadClocks()
     this->max_clocks = this->clocks_verilog.size();
     cout << "maxclocks = " << this->max_clocks << endl;
     this->verilog_file.close();
+}
+void myScene::ReadRamClocks()
+{
+    this->clocks_ram.clear();
+    this->verilog_file.open(this->ramPath); if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
+    string s;
+    while (getline(this->verilog_file,s))
+    {
+        this->clocks_ram.push_back(s);
+//        cout << s << "#";
+    }
+    cout << endl;
+}
+void myScene::ReadDMAClocks()
+{
+    this->clocks_DMA.clear();
+    this->verilog_file.open(this->DMAPath);    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
+    string s;
+    while (getline(this->verilog_file,s))
+        this->clocks_DMA.push_back(s);
+    this->verilog_file.close();
+}
+void myScene::ReadIO1Clocks()
+{
+    this->clocks_IO1.clear();
+    this->verilog_file.open(this->IO1Path);    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
+    string s;
+    while (getline(this->verilog_file,s))
+        this->clocks_IO1.push_back(s);
+    this->verilog_file.close();
+}
+void myScene::ReadIO2Clocks()
+{
+    this->clocks_IO2.clear();
+    this->verilog_file.open(this->IO2Path);
+    if(!this->verilog_file.is_open()) { cout << "file cannot open" << endl; }
+    string s;
+    while (getline(this->verilog_file,s))
+    {
+        if (s[0] == '/')
+            continue;
+        if (s == "" || s == " ")
+            continue;
+        for (int i =0 ; i < s.size();i ++)
+            if(s[i]== ' ')
+            {
+                s.erase(i,1);
+                i--;
+            }
+        this->clocks_IO2.push_back(s);
+    }
+    this->verilog_file.close();
+
 }
 void myScene::initColors()
 {
@@ -401,6 +480,11 @@ void myScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
     this->cursor->setPlainText(s);
     this->cursor->setPos(QPointF(point.x()+10,point.y())); // +10 for visualization only
     cout << point.x() << "," << point.y() << endl ;
+
+    if(point.x() >= -393 && point.x() <= -73 && point.y() >= 267 && point.y() <= 425)
+        this->DMA_Widget->show();
+    if(point.x() >= 290 && point.x() <= 460 && point.y() >= -325 && point.y() <= -65)
+        this->RAM_Widget->show();
 }
 //void myScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //{

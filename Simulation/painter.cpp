@@ -93,7 +93,6 @@ void Painter::init_Text()
     // ============ PC && Instruction ==================
     this->Text["PC"] = newText(-770,-390,"PC = ",true);
     this->Text["Instruction"] = newText(-770,-370,"Instruction = ",true);
-
 }
 Painter::Painter(QObject *parent) : QObject(parent)
 {

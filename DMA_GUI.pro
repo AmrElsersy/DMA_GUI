@@ -24,6 +24,7 @@ SOURCES += \
     Simulation/path.cpp \
     Simulation/scene.cpp \
     Simulation/state.cpp \
+    Simulation/tree_widget.cpp \
     Simulation/view.cpp \
     gui.cpp \
     main.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     Simulation/path.h \
     Simulation/scene.h \
     Simulation/state.h \
+    Simulation/tree_widget.h \
     Simulation/view.h \
     mainwindow.h
 

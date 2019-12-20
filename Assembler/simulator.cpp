@@ -57,6 +57,7 @@ void Simulator::Modelsim()
 
 void Simulator::ASSEMBLY(vector<string> ray2)
 {
+    this->code_from_editor.clear();
     this->code_from_editor = ray2;
     this->Simulate();
     emit init_simulation(this->code);
@@ -69,7 +70,6 @@ void Simulator::Simulate()
         Read_Instruction_Editor();
         emit Output_Print("Reading Editor is Done");
         cout << "Reading Editor done" << endl;
-
     }
     catch (...) {
         emit Output_Print("Error Reading Editor");
@@ -79,7 +79,6 @@ void Simulator::Simulate()
     try
     {
         this->Assemble_Instructions();
-        emit Output_Print("Assembly is Done");
         cout << "Assembly Done" << endl;
     }
     catch (const exception& e)
@@ -91,13 +90,10 @@ void Simulator::Simulate()
         return;
     }
     print(this->assembler->get_assembled_strings());
-
-    emit Output_Print("Running ModelSim ...");
     try {
         this->Modelsim();
         cout << "Modelsim execution" << endl;
     } catch (...) {
-        emit Output_Print("Error in ModelSim");
         cout << "error in modelsim" << endl;
         return;
     }

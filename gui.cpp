@@ -324,6 +324,7 @@ void Gui::simulate_Slot()
 
 void Gui::open_Slot()
 {
+    dialogFile->setDirectory(QCoreApplication::applicationDirPath() + "/../../DMA_GUI");
     dialogFile->setNameFilter("*.txt");
     dialogFile->setAcceptMode(QFileDialog::AcceptOpen);
     dialogFile->setViewMode(QFileDialog::List);
@@ -401,11 +402,11 @@ void Gui::tool_Bar_Slot(QAction *actionTrig)
     {
         simulate_Slot();
     }
-    else if (actionTrig->text() == ("Memory IO"))
+    else if (actionTrig->text() == ("Printer"))
     {
         memory_IO_Slot();
     }
-    else if (actionTrig->text() == ("IO Memory"))
+    else if (actionTrig->text() == ("Keyboard"))
     {
         io_Memory_Slot();
     }

@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QProgressBar>
 #include <QGraphicsProxyWidget>
+#include "tree_widget.h"
 
 using namespace std;
 
@@ -35,18 +36,37 @@ private:
     // states
     uint index;
     vector<State> states;
+
     // reading verilog data each clock cycle
     string verilogPath;
+    string ramPath;
+    string IO1Path;
+    string IO2Path;
+    string DMAPath;
+
     ifstream verilog_file;
     vector<string> clocks_verilog;
+    vector<string> clocks_ram;
+    vector<string> clocks_IO1;
+    vector<string> clocks_IO2;
+    vector<string> clocks_DMA;
     uint max_clocks;
     // ray2
     QImage image;
     QIcon icon;
 
+    Tree_Widget* DMA_Widget;
+    Tree_Widget* RAM_Widget;
+    Tree_Widget* IO1_Widget;
+    Tree_Widget* IO2_Widget;
+
 public:
     explicit myScene(QWidget *parent = nullptr);
     void ReadClocks();
+    void ReadRamClocks();
+    void ReadDMAClocks();
+    void ReadIO1Clocks();
+    void ReadIO2Clocks();
     void initStates();
     void updateStates(int);
 
