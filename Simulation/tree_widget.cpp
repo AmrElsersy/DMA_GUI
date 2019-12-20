@@ -111,7 +111,7 @@ void Tree_Widget::init_DMA()
 void Tree_Widget::init_Memory()
 {
     this->setHeaderLabels({"Address", "Value"});
-    for (uint i =0 ; i< RAM_ADDRESS_END ; i++)
+    for (uint i =RAM_ADDRESS_START ; i< RAM_ADDRESS_END ; i++)
     {
         this->addItem({QString::number(i),"0"});
     }
@@ -122,6 +122,6 @@ void Tree_Widget::update(vector<string> values)
     cout << "values_size =" << values.size() << endl;
     cout << "Items_size =" << Items.size() << endl;
 
-    for (uint i =0 ; i< RAM_ADDRESS_END ; i++)
+    for (uint i =RAM_ADDRESS_START ; i< RAM_ADDRESS_END-1 ; i++)
         this->Items[i]->setText(1,QString::fromStdString(values[i]));
 }

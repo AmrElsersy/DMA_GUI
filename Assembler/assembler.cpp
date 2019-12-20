@@ -278,11 +278,16 @@ void Assembler::File_assembled_instructions(string path )
 
     string s;
     // write line by line
-    for(uint i =0 ;i < assembled_Instr_Strings.size(); i++)
-    {   s = assembled_Instr_Strings[i];
+    for(uint i =0 ;i < assembled_Instr_Strings.size()-1; i++)
+    {
+        s = assembled_Instr_Strings[i];
         s.erase(0,2); // delete 0x because verilog dosn't read it
         file << s << endl;
     }
+    s = assembled_Instr_Strings[assembled_Instr_Strings.size()-1];
+    s.erase(0,2);
+    file << s ;
+
     file.close();
     cout << "************* Assembled file is Written **************" << endl;
 }

@@ -19,8 +19,8 @@ myScene::myScene(QWidget *parent) : QGraphicsScene(MAX_TOP_LEFT_CORNER,1900,1000
     this->DMAPath = (QCoreApplication::applicationDirPath() + "/../../DMA/dma.txt").toStdString();
 
     // init
-    this->initColors();
     this->initButtons();
+
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
     // timer
     this->timer = new QTimer();
@@ -62,13 +62,15 @@ void myScene::updateStates(int direction)
         }
         this->index --;
     }
-    this->progressBar->setValue(this->index);
-    if(this->index < this->clocks_ram.size())
-    {
-        vector<string> ram_values = split_string(this->clocks_ram[this->index],",");
-        ram_values.erase(ram_values.end());
-        this->RAM_Widget->update(ram_values);
-    }
+    if (this->index <= this->progressBar->maximum())
+        this->progressBar->setValue(this->index);
+
+//    if(this->index < this->clocks_ram.size())
+//    {
+//        vector<string> ram_values = split_string(this->clocks_ram[this->index],",");
+//        ram_values.erase(ram_values.end());
+//        this->RAM_Widget->update(ram_values);
+//    }
 
     this->myPainter->setCPU_Color(this->states[this->index].CPUColor);
     this->myPainter->setDMA_Color(this->states[this->index].DMAColor);
@@ -98,6 +100,7 @@ void myScene::updateStates(int direction)
 
     this->myPainter->setPC(QString::number(this->states[this->index].PC));
     this->myPainter->setInstruction(this->states[this->index].Instruction);
+    cout << "index=" << this->index<< endl;
 
 }
 void myScene::addNewItem(QGraphicsItem * item)
@@ -109,7 +112,6 @@ void myScene::INIT_Scene(vector<string> Code)
     // clear all
     this->index = 0;
     this->states.clear();
-    this->initColors();    // initialize black color
     this->code.clear();
 
     // get instruction code
@@ -119,11 +121,10 @@ void myScene::INIT_Scene(vector<string> Code)
 
     // read clocks description
     this->ReadClocks(); // read feedback.txt
-    this->ReadRamClocks(); // read ram.txt
+//    this->ReadRamClocks(); // read ram.txt
 //    this->ReadDMAClocks();
-//    this->ReadIO1Clocks();
-//    this->ReadIO2Clocks();
 
+    this->initColors();
     this->initStates();
     this->index = 0;
     this->progressBar->setRange(0,this->max_clocks);
@@ -137,10 +138,12 @@ void myScene::initStates()
         vector<string> data = split_string(clocks_verilog[i],",");
 
         int PC  = string_to_int(data[0]);
-        QString Instruction = QString::fromStdString(this->code[PC]);
-
+        if (PC < max_clocks)
+        {
+            QString Instruction = QString::fromStdString(this->code[PC]);
+            state.Instruction = Instruction;
+        }
         state.PC = PC;
-        state.Instruction = Instruction;
 
         int DataBusValue    = string_to_int(data[1]);
         int AddressBusValue = string_to_int(data[2]);
@@ -368,7 +371,7 @@ void myScene::ReadClocks()
         cout << this->clocks_verilog[i] << "   " ;
     cout << endl;
 
-    this->max_clocks = this->clocks_verilog.size();
+    this->max_clocks = this->clocks_verilog.size() ;
     cout << "maxclocks = " << this->max_clocks << endl;
     this->verilog_file.close();
 }

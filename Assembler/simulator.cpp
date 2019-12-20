@@ -7,7 +7,7 @@ Simulator::Simulator()
     this->modelsim_process = new QProcess();
     // ==================== Run ModelSim ============================
     this->modelsim_process->setWorkingDirectory(this->modelsim_path);
-    this->modelsim_command = "vsim -c -do \"run 900 ns\" work.tb_MIPS";
+    this->modelsim_command = "vsim -c -do \"run -all\" work.computer_arch";
 
     this->Program_Counter = new Register("PC",100,0);
     this->register_file = new Register_File();
