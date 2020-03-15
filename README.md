@@ -15,13 +15,13 @@ Assembler for the Assembly Instructions
 Communication with Verilog 
 Accessing DMA & Processor Registers
 
-![GUI](https://ibb.co/ZxXRSNV)
+![GUI](https://i.ibb.co/7KCxQbX/download.png)
 
 ## Graphical Simulation
 Visualization of the Execution Flow to allow the user to see what is going on underneath the hood @ the Hardware 
 
-![Design](https://ibb.co/LQ92tvc)
+![Design](https://i.ibb.co/cb27FxZ/black.png)
 
-![DMA](https://ibb.co/1sZH3YF)
+![DMA](https://i.ibb.co/dbBnSs8/dma.png)
 
 ![Processor](https://i.ibb.co/1sZH3YF/dma.png)
