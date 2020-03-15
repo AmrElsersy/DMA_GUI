@@ -14,6 +14,7 @@
 Assembler for the Assembly Instructions
 Communication with Verilog 
 Accessing DMA & Processor Registers
+
 ![GUI](https://ibb.co/ZxXRSNV)
 
 ## Graphical Simulation
