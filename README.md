@@ -24,4 +24,4 @@ Visualization of the Execution Flow to allow the user to see what is going on un
 
 ![DMA](https://ibb.co/1sZH3YF)
 
-![Processor](https://ibb.co/W2rrhfH)
+![Processor](https://i.ibb.co/1sZH3YF/dma.png)
