@@ -26,3 +26,6 @@ Visualization of the Execution Flow to allow the user to see what is going on un
 -	Supports resetting the DMA, address increment or decrement and DREQ and DACK signal to be read as active low or high
 -	Supports status register to be read by processor to be aware the current status of channels in DMA 
 -	Supports set request by software (Assembly instruction)
+
+## Project Presentation
+https://prezi.com/view/3kX4RpGPsJHqwjP6DfWL/
