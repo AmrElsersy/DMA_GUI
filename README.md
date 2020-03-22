@@ -17,12 +17,12 @@ Visualization of the Execution Flow to allow the user to see what is going on un
 
 
 ## Verilog 
-• **Github** : https://github.com/AmrElsersy/DMA.git
-•	Supports reading internal registers, current mode and status registers in DMA 
-•	Supports IO to Memory, Memory to IO, Memory to Memory modes
-•	Supports transferring data up to 64k byte in one request 
-•	Supports Memory mapped devices and memory up to 64k byte 
-•	Supports 4 channels to connect up to 4 IO devices (Keyboard, Printer and Hard Disk, etc)
-•	Supports resetting the DMA, address increment or decrement and DREQ and DACK signal to be read as active low or high
-•	Supports status register to be read by processor to be aware the current status of channels in DMA 
-•	Supports set request by software (Assembly instruction)
+- **Github** : https://github.com/AmrElsersy/DMA.git
+-	Supports reading internal registers, current mode and status registers in DMA 
+-	Supports IO to Memory, Memory to IO, Memory to Memory modes
+-	Supports transferring data up to 64k byte in one request 
+-	Supports Memory mapped devices and memory up to 64k byte 
+-	Supports 4 channels to connect up to 4 IO devices (Keyboard, Printer and Hard Disk, etc)
+-	Supports resetting the DMA, address increment or decrement and DREQ and DACK signal to be read as active low or high
+-	Supports status register to be read by processor to be aware the current status of channels in DMA 
+-	Supports set request by software (Assembly instruction)
